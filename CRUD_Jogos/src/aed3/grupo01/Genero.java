@@ -14,7 +14,9 @@ public class Genero
     //Construtor
     public Genero(long id, String nome, ArrayList<Long> jogos)
     {
-
+        this.setId(id);
+        this.setNome(nome);
+        this.setJogos(jogos);
     }
 
     //Metodos Gets
@@ -57,5 +59,39 @@ public class Genero
     public void setJogos(ArrayList<Long> jogos)
     {
         this.jogos=jogos;
+    }
+
+    //Outros metodos
+    public String toString()
+    {
+        String resp="";
+
+        //Imprimindo em resp o cabechalho
+        resp+="|||";
+
+        //Imprimindo em resp o id
+        resp+=this.getId();
+
+        //Imprimindo em resp o | divisor
+        resp+="||";
+
+        //Imprimindo em resp o nome
+        resp+=this.getNome();
+
+        //Imprimindo em resp o | divisor
+        resp+="||";
+
+        //Imprimindo os jogos
+        for(int i=0;i<this.getJogos().size();i++)
+        {
+            resp+=getJogos().get(i);
+            resp+="|";
+        }
+
+        //Imprimindo em resp o cabechalho do fim
+        resp+="||";
+
+        return resp;
+
     }
 }

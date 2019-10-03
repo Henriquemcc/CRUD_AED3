@@ -1,5 +1,5 @@
 package aed3.grupo01;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Autor
@@ -9,12 +9,12 @@ public class Autor
     //Atributos
     private long id;
     private String nome;
-    private LocalDateTime dataNascimento;
+    private LocalDate dataNascimento;
     private ArrayList<String> nacionalidades;
     private ArrayList<Long> jogos;
 
     //Construtor
-    public Autor(long id, String nome, LocalDateTime dataNascimento, ArrayList<String> nacionalidades, ArrayList<Long> jogos)
+    public Autor(long id, String nome, LocalDate dataNascimento, ArrayList<String> nacionalidades, ArrayList<Long> jogos)
     {
         this.setId(id);
         this.setNome(nome);
@@ -39,7 +39,7 @@ public class Autor
         return  this.nome;
     }
 
-    public LocalDateTime getDataNascimento()
+    public LocalDate getDataNascimento()
     {
         return this.dataNascimento;
     }
@@ -70,7 +70,7 @@ public class Autor
         this.nome=nome.toUpperCase();
     }
 
-    public void setDataNascimento(LocalDateTime dataNascimento)
+    public void setDataNascimento(LocalDate dataNascimento)
     {
         this.dataNascimento=dataNascimento;
     }
@@ -128,7 +128,7 @@ public class Autor
         }
 
         //Imprimindo em resp o cabechalho do fim
-        resp+="||";
+        resp+="|||";
 
         return resp;
     }

@@ -1,6 +1,6 @@
 package aed3.grupo01;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Main
@@ -8,26 +8,47 @@ public class Main
 
     public static void main(String[] args)
     {
-        ArrayList<Long> generoTmp=new ArrayList<>();
-        generoTmp.add(Long.valueOf(12));
-        generoTmp.add(Long.valueOf(14));
-        generoTmp.add(Long.valueOf(17));
-        generoTmp.add(Long.valueOf(19));
-        generoTmp.add(Long.valueOf(200));
-        generoTmp.add(Long.valueOf(1024));
-        generoTmp.add(Long.valueOf(400));
-        ArrayList<Byte> plataformas=new ArrayList<>();
-        plataformas.add(Byte.valueOf((byte)12));
-        plataformas.add(Byte.valueOf((byte)30));
-        plataformas.add(Byte.valueOf((byte)100));
-        plataformas.add(Byte.valueOf((byte)200));
-        plataformas.add(Byte.valueOf((byte)400));
-        plataformas.add(Byte.valueOf((byte)600));
-        LocalDateTime dia=LocalDateTime.of(1, 1, 1, 1, 1, 1);
+        ArrayList<Long> testeArray=new ArrayList<>();
+        testeArray.add(Long.valueOf(12));
+        testeArray.add(Long.valueOf(14));
+        testeArray.add(Long.valueOf(17));
+        testeArray.add(Long.valueOf(19));
+        testeArray.add(Long.valueOf(200));
+        testeArray.add(Long.valueOf(1024));
+        testeArray.add(Long.valueOf(400));
 
+        ArrayList<Byte> testeArray2=new ArrayList<>();
+        testeArray2.add(Byte.valueOf((byte)12));
+        testeArray2.add(Byte.valueOf((byte)2));
+        testeArray2.add(Byte.valueOf((byte)15));
+        testeArray2.add(Byte.valueOf((byte)13));
+        testeArray2.add(Byte.valueOf((byte)14));
+        testeArray2.add(Byte.valueOf((byte)15));
+        testeArray2.add(Byte.valueOf((byte)16));
+        testeArray2.add(Byte.valueOf((byte)18));
+        testeArray2.add(Byte.valueOf((byte)19));
+        testeArray2.add(Byte.valueOf((byte)20));
+        LocalDate dia=LocalDate.of(1,1,1);
 
-	    Jogo teste=new Jogo(0, "Assassin's Creed III", 12, 1024, 12, generoTmp, plataformas, dia, (float) 12.0);
-	    System.out.println(teste.toString());
+        ArrayList<String> testeArray3=new ArrayList<>();
+        testeArray3.add("OWFIHFOIEH");
+        testeArray3.add("OWFIHFOIEHDOFSO");
+        testeArray3.add("OWFIHFOIEHSVDJSVJSDVIO");
+        testeArray3.add("OWFIHFOIEHSVVDISJOOIJVIO");
+
+	    Jogo jogo=new Jogo(0, "Assassin's Creed III", 12, 1024, 12, testeArray, testeArray2, dia, (float) 12.0);
+	    System.out.println(jogo.toString());
+
+	    Autor autor=new Autor(12, "João da Silva", dia, testeArray3, testeArray);
+	    System.out.println(autor.toString());
+
+	    Empresa empresa=new Empresa(0,"Ubisoft", dia, testeArray);
+	    System.out.println(empresa);
+
+	    Genero genero=new Genero(0,"Tiro",testeArray);
+	    System.out.println(genero.toString());
+
+	    Plataformas plataforma=new Plataformas();
 
     }
 }

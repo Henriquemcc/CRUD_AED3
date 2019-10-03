@@ -69,5 +69,43 @@ public class Empresa
         this.jogos=jogos;
     }
 
+    public String toString()
+    {
+        String resp="";
+
+        //Imprimindo em resp o cabechalho
+        resp+="|||";
+
+        //Imprimindo em resp o id
+        resp+=this.getId();
+
+        //Imprimindo em resp o | divisor
+        resp+="||";
+
+        //Imprimindo em resp o nome
+        resp+=this.getNome();
+
+        //Imprimindo em resp o | divisor
+        resp+="||";
+
+        //Imprimindo a data da fundacao
+        resp+=this.getDataFundacao().toString();
+
+        //Imprimindo em resp o | divisor
+        resp+="||";
+
+        //Imprimindo os jogos
+        for(int i=0;i<this.getJogos().size();i++)
+        {
+            resp+=this.getJogos().get(i);
+            resp+="|";
+        }
+
+        //Imprimindo o cabechalho do fim
+        resp+="||";
+
+        return resp;
+    }
+
 
 }

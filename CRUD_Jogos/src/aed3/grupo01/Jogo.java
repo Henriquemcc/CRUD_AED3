@@ -1,5 +1,5 @@
 package aed3.grupo01;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Jogo
@@ -14,11 +14,11 @@ public class Jogo
     private long publisher;
     private ArrayList<Long> genero;
     private ArrayList<Byte> plataformasDisponiveis;
-    private LocalDateTime dataLancamento;
+    private LocalDate dataLancamento;
     private float preco;
 
     //Construtor
-    public Jogo(long id, String nome, long diretor, long desenvolvedor, long publisher, ArrayList<Long> genero, ArrayList<Byte> plataformasDisponiveis, LocalDateTime dataLancamento, float preco)
+    public Jogo(long id, String nome, long diretor, long desenvolvedor, long publisher, ArrayList<Long> genero, ArrayList<Byte> plataformasDisponiveis, LocalDate dataLancamento, float preco)
     {
         this.setId(id);
         this.setNome(nome);
@@ -73,7 +73,7 @@ public class Jogo
         return  this.plataformasDisponiveis;
     }
 
-    public LocalDateTime getDataLancamento()
+    public LocalDate getDataLancamento()
     {
         return this.dataLancamento;
     }
@@ -124,7 +124,7 @@ public class Jogo
         this.plataformasDisponiveis=plataformasDisponiveis;
     }
 
-    public void setDataLancamento(LocalDateTime dataLancamento)
+    public void setDataLancamento(LocalDate dataLancamento)
     {
         this.dataLancamento=dataLancamento;
     }
@@ -161,15 +161,11 @@ public class Jogo
         //Imprimindo em resp o | divisor
         resp+="||";
 
-        //Imprimindo em resp os desenvolvedores
-        for(int i=0;i<this.getDesenvolvedor().size();i++)
-        {
-            resp+=this.getDesenvolvedor().get(i);
-            resp+="|";
-        }
+        //Imprimindo em resp o desenvolvedor
+        resp+=this.getDesenvolvedor();
 
         //Imprimindo em resp o | divisor
-        resp+="|";
+        resp+="||";
 
         //Imprimindo em resp o publisher
         resp+=this.getPublisher();
