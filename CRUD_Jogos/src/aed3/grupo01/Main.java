@@ -8,11 +8,6 @@ public class Main
 
     public static void main(String[] args)
     {
-        ArrayList<Long> desenvolvedorTmp=new ArrayList<>();
-        desenvolvedorTmp.add(Long.valueOf(100));
-        desenvolvedorTmp.add(Long.valueOf(101));
-        desenvolvedorTmp.add(Long.valueOf(102));
-        desenvolvedorTmp.add(Long.valueOf(1020));
         ArrayList<Long> generoTmp=new ArrayList<>();
         generoTmp.add(Long.valueOf(12));
         generoTmp.add(Long.valueOf(14));
@@ -31,7 +26,7 @@ public class Main
         LocalDateTime dia=LocalDateTime.of(1, 1, 1, 1, 1, 1);
 
 
-	    Jogo teste=new Jogo(0, "Assassin's Creed III", 12, desenvolvedorTmp, 12, generoTmp, plataformas, dia, (float) 12.0);
+	    Jogo teste=new Jogo(0, "Assassin's Creed III", 12, 1024, 12, generoTmp, plataformas, dia, (float) 12.0);
 	    System.out.println(teste.toString());
 
     }
