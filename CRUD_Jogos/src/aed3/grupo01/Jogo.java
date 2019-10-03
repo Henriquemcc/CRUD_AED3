@@ -10,7 +10,7 @@ public class Jogo
     private long id;
     private String nome;
     private long diretor;
-    private ArrayList<Long> desenvolvedor;
+    private long desenvolvedor;
     private long publisher;
     private ArrayList<Long> genero;
     private ArrayList<Byte> plataformasDisponiveis;
@@ -18,7 +18,7 @@ public class Jogo
     private float preco;
 
     //Construtor
-    public Jogo(long id, String nome, long diretor, ArrayList<Long> desenvolvedor, long publisher, ArrayList<Long> genero, ArrayList<Byte> plataformasDisponiveis, LocalDateTime dataLancamento, float preco)
+    public Jogo(long id, String nome, long diretor, long desenvolvedor, long publisher, ArrayList<Long> genero, ArrayList<Byte> plataformasDisponiveis, LocalDateTime dataLancamento, float preco)
     {
         this.setId(id);
         this.setNome(nome);
@@ -53,7 +53,7 @@ public class Jogo
         return this.diretor;
     }
 
-    public ArrayList<Long> getDesenvolvedor()
+    public long getDesenvolvedor()
     {
         return this.desenvolvedor;
     }
@@ -104,7 +104,7 @@ public class Jogo
         this.diretor=diretor;
     }
 
-    public void setDesenvolvedor(ArrayList<Long> desenvolvedor)
+    public void setDesenvolvedor(long desenvolvedor)
     {
         this.desenvolvedor=desenvolvedor;
     }
