@@ -40,7 +40,13 @@ public class CRUDPLATAFORMA
                 switch(opcao)
                 {
                     case 1: listarPlataforma(); break;
-                    case 2: buscarPlataforma(); break;
+                    case 2:
+                        System.out.println("\nBUSCA");
+                        int id;
+                        System.out.print("ID: ");
+                        id = Integer.valueOf(console.nextLine());
+                        buscarPlataforma(id);
+                    break;
                     case 3: incluirPlataforma(); break;
                     case 4: excluirPlataforma(); break;
                     case 9: povoar(); break;
@@ -69,12 +75,9 @@ public class CRUDPLATAFORMA
         
     }
    
-    public static void buscarPlataforma() throws Exception
+    public static void buscarPlataforma(int id) throws Exception
     {
-        System.out.println("\nBUSCA");
-        int id;
-        System.out.print("ID: ");
-        id = Integer.valueOf(console.nextLine());
+        
         if(id <=0) 
             return;
         Plataforma l;

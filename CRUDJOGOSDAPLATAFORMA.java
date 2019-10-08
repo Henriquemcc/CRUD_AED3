@@ -1,12 +1,8 @@
-import java.text.DecimalFormat;
-import java.util.Scanner;
 
 public class CRUDJOGOSDAPLATAFORMA
 {
     
-    private static Scanner console = new Scanner(System.in);
     private static ArquivoIndexado<JogosDaPlataforma> arqJogosDaPlataforma;
-    private static DecimalFormat df;
     
     //LISTA TODOS OS JOGOS DE UMA PLATAFORMA
     public static void listarJogosdeumaPlataforma(int idPlataforma) throws Exception
@@ -30,57 +26,44 @@ public class CRUDJOGOSDAPLATAFORMA
         for(int i=0; i<JogosDaPlataforma.length; i++)
         {
             jdp = (JogosDaPlataforma)JogosDaPlataforma[i];
-            if(jdp.getIdPlataforma()==idJogo){
-                CRUDPLATAFORMA.buscar(jdp.getIdJogo());
+            if(jdp.getIdJogo()==idJogo){
+                CRUDPLATAFORMA.buscarPlataforma(jdp.getIdPlataforma());
             }
         }
         
     }
-   /*
-    public static void buscarPlataforma() throws Exception
-    {
-        System.out.println("\nBUSCA");
-        int id;
-        System.out.print("ID: ");
-        id = Integer.valueOf(console.nextLine());
-        if(id <=0) 
-            return;
-        Plataforma l;
-        if( (l = (Plataforma)arqPlataformas.buscar(id))!=null )
-            System.out.println(l);
-        else
-            System.out.println("Plataforma não encontrada");
-    }*/
-    
+
     public static void incluirJogodaPlataforma(int idJogo, int idPlataforma) throws Exception
     {
         JogosDaPlataforma l = new JogosDaPlataforma(-1,idPlataforma,idJogo);
         arqJogosDaPlataforma.incluir(l);
     }
-   /*
-    public static void excluirPlataforma() throws Exception
+    //Funcionamento mode
+    //Mode = true procura todas as plataformas com o id enviado e remove as entidades
+    //Mode = false procura todos os jogos com o id enviado e remove as entidades
+    public static void excluirJogosdaPlataforma(int id,boolean mode) throws Exception
     {
-        System.out.println("\nEXCLUSÃO");
-        int id;
-        System.out.print("ID: ");
-        id = Integer.valueOf(console.nextLine());
-        if(id <=0) 
-            return;
-        Plataforma l;
-        if( (l = (Plataforma)arqPlataformas.buscar(id))!=null )
-        {
-            System.out.println(l);
-            System.out.print("\nConfirma exclusão? ");
-            char confirma = console.nextLine().charAt(0);
-            if(confirma=='s' || confirma=='S')
-            {
-                if( arqPlataformas.excluir(id) )
-                {
-                    System.out.println("Plataforma excluída.");
+        Object[] jdps = arqJogosDaPlataforma.listar();
+        JogosDaPlataforma jdp;
+        if(mode){
+            for(int i=0;i<jdps.length;i++){
+                jdp = (JogosDaPlataforma)jdps[i];
+                if(jdp.getIdPlataforma()==id){
+                    if( arqJogosDaPlataforma.buscar(jdp.getID())!=null ){
+                        arqJogosDaPlataforma.excluir(jdp.getID());
+                    }
                 }
             }
         }
-        else
-            System.out.println("Plataforma não encontrada");
-    }*/
+        else{
+            for(int i=0;i<jdps.length;i++){
+                jdp = (JogosDaPlataforma)jdps[i];
+                if(jdp.getIdJogo()==id){
+                    if( arqJogosDaPlataforma.buscar(jdp.getID())!=null ){
+                        arqJogosDaPlataforma.excluir(jdp.getID());
+                    }
+                }
+            }
+        }
+    }
 }
