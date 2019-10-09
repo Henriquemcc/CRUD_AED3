@@ -11,7 +11,7 @@ public class CRUDGENERO {
 
         try
         {
-            arqGeneros = new ArquivoIndexado<>(Genero.class.getConstructor(), "generos.db");
+            criaArquivo();
             
            // menu
            int opcao;
@@ -57,17 +57,45 @@ public class CRUDGENERO {
             e.printStackTrace();
         }        
     }    
-    
-    public static void listarGenero() throws Exception
+    public static void criaArquivo()throws Exception{
+        arqGeneros = new ArquivoIndexado<>(Genero.class.getConstructor(), "generos.db");
+    }
+    public static boolean listarGenero() throws Exception
     {
+        criaArquivo();
+        if(arqGeneros==null){
+            System.out.println("Nenhum genero registrado");
+            return false;
+        }
         Object[] generos = arqGeneros.listar();
+        if(generos.length==0){
+            System.out.println("Nenhum genero registrado");
+            return false;
+        }
+        else{
+            for(int i=0; i<generos.length; i++)
+            {
+                Genero g = (Genero)generos[i];
+                System.out.print(g.getID()+" "+g.getTipo()+" ");
+            }
+            System.out.println("");
+        }
+        return true;
+    }
+    //RECEBE O NOME DE UM GENERO E RETORNA O SEU ID
+    public static int buscaGeneroPorNome(String nomeGenero)throws Exception{
+        Object[] generos = arqGeneros.listar();
+        int resp=-1;
         for(int i=0; i<generos.length; i++)
         {
-            System.out.println((Genero)generos[i]);
+            Genero g = (Genero)generos[i];
+            if(g.getTipo().equals(nomeGenero)){
+                resp=g.getID();
+                i=generos.length;
+            }
         }
-        
+        return resp;
     }
-   
     public static void buscarGenero() throws Exception
     {
         System.out.println("\nBUSCA");
@@ -93,8 +121,10 @@ public class CRUDGENERO {
         if(confirma=='s' || confirma=='S')
         {
             Genero l = new Genero(-1, tipo);
+            if(arqGeneros==null)
+                criaArquivo();
             int id = arqGeneros.incluir(l);
-            System.out.println("Genero incluído com ID: "+id);
+            System.out.println("Genero incluido com ID: "+id);
         }
    }
    
@@ -131,33 +161,6 @@ public class CRUDGENERO {
         arqGeneros.incluir(new Genero(-1,"MOBA"));
         arqGeneros.incluir(new Genero(-1,"Adventure"));
         arqGeneros.incluir(new Genero(-1,"Puzzle"));
-        /*
-        arqLivros.incluir(new Livro(-1,"1984","George Orwell",(float)32.8));
-        arqLivros.incluir(new Livro(-1,"A Odisséia","Homero",(float)35.9));
-        arqLivros.incluir(new Livro(-1,"Sherlock Holmes","Arthur Conan Doyle",(float)24));
-        arqLivros.incluir(new Livro(-1,"Joyland","Stephen King",(float)17.9));
-        arqLivros.incluir(new Livro(-1,"Objetos Cortantes","Gillian Flynn",(float)16.9));
-        arqLivros.incluir(new Livro(-1,"A Lista Negra","Jennifer Brown",(float)16.9));
-        arqLivros.incluir(new Livro(-1,"Garota Exemplar","Gillian Flynn",(float)14.9));
-        arqLivros.incluir(new Livro(-1,"O Iluminado","Stephen King",(float)14.9));
-        arqLivros.incluir(new Livro(-1,"Queda de Gigantes","Ken Follett",(float)23.67));
-        arqLivros.incluir(new Livro(-1,"Eternidade Por Um Fio","Ken Follett",(float)30.1));
-        arqLivros.incluir(new Livro(-1,"Inverno do Mundo","Ken Follett",(float)29.99));
-        arqLivros.incluir(new Livro(-1,"A Guerra dos Tronos","George R. R. Martin",(float)22.76));
-        arqLivros.incluir(new Livro(-1,"A Revolução dos Bichos","George Orwell",(float)27.36));
-        arqLivros.incluir(new Livro(-1,"O Mundo de Sofia","Jostein Gaarder",(float)28.2));
-        arqLivros.incluir(new Livro(-1,"O Velho e o Mar","Ernest Hemingway",(float)16.9));
-        arqLivros.incluir(new Livro(-1,"Escuridão Total Sem Estrelas","Stephen King",(float)28.4));
-        arqLivros.incluir(new Livro(-1,"O Pintassilgo","Donna Tartt",(float)21.63));
-        arqLivros.incluir(new Livro(-1,"Se Eu Ficar","Gayle Forman",(float)13.54));
-        arqLivros.incluir(new Livro(-1,"Toda Luz Que Não Podemos Ver","Anthony Doerr",(float)24.38));
-        arqLivros.incluir(new Livro(-1,"Eu, Você e a Garota Que Vai Morrer","Jesse Andrews",(float)14.9));
-        arqLivros.incluir(new Livro(-1,"Na Natureza Selvagem","Jon Krakauer",(float)14.9));
-        arqLivros.incluir(new Livro(-1,"Eu, Robô","Isaac Asimov",(float)20.15));
-        arqLivros.incluir(new Livro(-1,"O Demonologista","Andrew Pyper",(float)32.47));
-        arqLivros.incluir(new Livro(-1,"O Último Policial","Ben Winters",(float)27.6));
-        arqLivros.incluir(new Livro(-1,"A Febre","Megan Abbott",(float)27.9));   
-        */
     }
     
 }

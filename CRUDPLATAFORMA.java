@@ -12,7 +12,7 @@ public class CRUDPLATAFORMA
 
         try
         {
-            arqPlataformas = new ArquivoIndexado<>(Plataforma.class.getConstructor(), "plataformas.db");
+            criaArquivo();
             
            // menu
            int opcao;
@@ -64,25 +64,40 @@ public class CRUDPLATAFORMA
             e.printStackTrace();
         }        
     }    
-    
-    public static void listarPlataforma() throws Exception
+    public static void criaArquivo()throws Exception{
+        arqPlataformas = new ArquivoIndexado<>(Plataforma.class.getConstructor(), "plataformas.db");
+    }
+    public static boolean listarPlataforma() throws Exception
     {
-        Object[] plataformas = arqPlataformas.listar();
-        for(int i=0; i<plataformas.length; i++)
-        {
-            System.out.println((Plataforma)plataformas[i]);
+        criaArquivo();
+        if(arqPlataformas==null){
+            System.out.println("Nenhuma plataforma registrada");
+            return false;
         }
-        
+        Object[] plataformas = arqPlataformas.listar();
+        if(plataformas.length==0){
+            System.out.println("Nenhuma plataforma registrada");
+            return false;
+        }
+        else{
+            for(int i=0; i<plataformas.length; i++)
+            {
+                Plataforma p = (Plataforma)plataformas[i];
+                System.out.print(p.getID()+" "+p.getNome()+" ");
+            }
+            System.out.println("");
+        }
+        return true;
     }
    
     public static void buscarPlataforma(int id) throws Exception
     {
-        
+        criaArquivo();
         if(id <=0) 
             return;
         Plataforma l;
         if( (l = (Plataforma)arqPlataformas.buscar(id))!=null )
-            System.out.println(l);
+            System.out.println("Plataforma: "+l.getNome());
         else
             System.out.println("Plataforma não encontrada");
     }
@@ -97,6 +112,8 @@ public class CRUDPLATAFORMA
         if(confirma=='s' || confirma=='S')
         {
             Plataforma l = new Plataforma(-1, nome);
+            if(arqPlataformas==null)
+                criaArquivo();
             int id = arqPlataformas.incluir(l);
             System.out.println("Plataforma incluída com ID: "+id);
         }
@@ -104,6 +121,7 @@ public class CRUDPLATAFORMA
    
     public static void excluirPlataforma() throws Exception
     {
+        criaArquivo();
         System.out.println("\nEXCLUSÃO");
         int id;
         System.out.print("ID: ");

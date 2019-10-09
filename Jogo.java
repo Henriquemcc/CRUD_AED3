@@ -70,7 +70,7 @@ public class Jogo implements Registro
     public String toString()
     {
         return "\nID: "+this.id+
-               "\ntitulo: "+this.titulo+
+               "\nTitulo: "+this.titulo+
                "\nScore: "+this.score;
     }
 
