@@ -38,7 +38,9 @@ public class Plataforma implements Registro
     {
         return this.id;
     }
-    
+    public String getNome(){
+        return this.nome;
+    }
     public String toString()
     {
         return "\nID: "+this.id+
