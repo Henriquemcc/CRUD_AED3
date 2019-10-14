@@ -1,4 +1,3 @@
-package packageone;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

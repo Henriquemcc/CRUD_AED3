@@ -1,4 +1,3 @@
-package packageone;
 
 import java.text.DecimalFormat;
 import java.util.InputMismatchException;

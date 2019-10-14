@@ -1,4 +1,3 @@
-package packageone;
 
 public class CrudJogosDaPlataforma
 {
