@@ -23,7 +23,7 @@ public class CrudPlataforma
                     {
                         exibirMenu();
                         comando=MyIO.readInt();
-                        if(comando<0 || comando>5)
+                        if(comando<0 || comando>9)
                             throw new InputMismatchException("Erro: Opcao Invalida!");
                         repetir=false;
                     }
