@@ -1,5 +1,7 @@
 package packageone;
 
+import java.io.File;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -113,7 +115,7 @@ public class CrudJogos
             Genero genero=(Genero)arqGeneros.buscar(jogo.getIdGenero());
             MyIO.println("Genero: "+genero.getTipo());
             int idsDosJogosDasPlataformas[]=idxJogoparaJdp.lista(jogo.getID());
-            for(int j=0;j<idsDosJogosDasPlataformas.length;i++)
+            for(int j=0;j<idsDosJogosDasPlataformas.length;j++)
             {
                 JogosDaPlataforma jogosDaPlataforma=(JogosDaPlataforma)arqJogosDaPlataforma.buscar(idsDosJogosDasPlataformas[j]);
                 menuBuscarPlataforma(jogosDaPlataforma.getIdPlataforma());
@@ -251,8 +253,11 @@ public class CrudJogos
     {
         Genero genero=getGenero(nomeDoGenero);
         if(genero==null)
+        {
             CrudGenero.incluirGenero(nomeDoGenero);
-        int idGenero=getGenero(nomeDoGenero).getID();
+            genero = getGenero(nomeDoGenero);
+        }
+        int idGenero=genero.getID();
 
         ArrayList<Integer> idPlataformas=new ArrayList<>();
 
@@ -279,19 +284,26 @@ public class CrudJogos
     public static Genero getGenero(String nomeDoGenero) throws Exception
     {
         Genero resp=null;
-        String generos=CrudGenero.listar().toLowerCase();
-        nomeDoGenero=nomeDoGenero.toLowerCase();
-        if(generos.contains(nomeDoGenero))
+        ArrayList<Genero> genero=new ArrayList<>();
+        Object objeto[]=arqGeneros.listar();
+        for(int i=0;i<objeto.length;i++)
         {
-            int direita=generos.indexOf(nomeDoGenero)-1;
-            int i=direita;
-            while(ehNumero(generos.charAt(i)))
-                i++;
-            int esquerda=i-1;
-            int id=Integer.parseInt(generos.substring(esquerda, direita));
-
-            resp=(Genero)arqGeneros.buscar(id);
+            Genero tmp=(Genero)objeto[i];
+            genero.add(tmp);
         }
+
+        int i=0;
+        boolean encontrado=false;
+        while(i<genero.size() && !encontrado)
+        {
+            if(genero.get(i).getTipo().toUpperCase().equals(nomeDoGenero.toUpperCase()))
+                encontrado=true;
+            else
+                i++;
+        }
+
+        if(encontrado)
+            resp=genero.get(i);
 
         return resp;
     }
@@ -306,20 +318,28 @@ public class CrudJogos
 
     public static Plataforma getPlataforma(String nomeDaPlataforma) throws Exception
     {
-        Plataforma resp=null;
-        String plataformas=CrudPlataforma.listar().toLowerCase();
-        nomeDaPlataforma=nomeDaPlataforma.toLowerCase();
-        if(plataformas.contains(nomeDaPlataforma))
-        {
-            int direita=plataformas.indexOf(nomeDaPlataforma)-1;
-            int i=direita;
-            while(ehNumero(plataformas.charAt(i)))
-                i++;
-            int esquerda=i+1;
-            int id=Integer.parseInt(plataformas.substring(esquerda, direita));
 
-            resp=(Plataforma)arqPlataformas.buscar(id);
+        Plataforma resp=null;
+        ArrayList<Plataforma> plataforma=new ArrayList<>();
+        Object objeto[]=arqPlataformas.listar();
+        for(int i=0;i<objeto.length;i++)
+        {
+            Plataforma tmp=(Plataforma)objeto[i];
+            plataforma.add(tmp);
         }
+        int i=0;
+        boolean encontrado=false;
+        while(i<plataforma.size() && !encontrado)
+        {
+            if(plataforma.get(i).getNome().toUpperCase().equals(nomeDaPlataforma.toUpperCase()))
+                encontrado=true;
+            else
+                i++;
+        }
+
+        if(encontrado)
+            resp=plataforma.get(i);
+
         return resp;
     }
 }
