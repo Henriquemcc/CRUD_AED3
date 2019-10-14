@@ -1,3 +1,5 @@
+package packageone;
+
 import java.io.*;
 
 public class Jogo implements Registro
@@ -6,12 +8,11 @@ public class Jogo implements Registro
     private int idGenero;
     private String titulo;
     private byte score;
-    //private dataLancamento;
+
     //Metodos construtores
     public Jogo()
     {
         this(0, 0, "", (byte)0);
-        //dataLancamento;
     }
 
     public Jogo(int id, int idGenero, String titulo, byte score)

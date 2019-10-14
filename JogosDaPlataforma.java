@@ -1,3 +1,5 @@
+package packageone;
+
 import java.io.*;
 
 public class JogosDaPlataforma implements Registro

@@ -1,3 +1,5 @@
+package packageone;
+
 import java.io.*;
 import java.util.ArrayList;
 
@@ -6,7 +8,8 @@ import java.util.ArrayList;
 // 2. Reaproveitar os espaços de páginas excluídas nas novas inclusões
 // 3. Criar método de reorganização (para eliminação de espaços excluídos)
 
-public class ArvoreBMais {
+public class ArvoreBMais
+{
 
     private int  ordem;                 // Número máximo de filhos que uma página pode conter
     private int  maxElementos;          // Variável igual a ordem - 1 para facilitar a clareza do código
@@ -24,7 +27,8 @@ public class ArvoreBMais {
     // Esta classe representa uma página da árvore. A árvore é armazenada em disco,
     // assim, apenas poucas páginas serão necessárias para os processos de inclusão,
     // alteração, exclusão e consulta. 
-    class ArvoreBMais_Pagina {
+    class ArvoreBMais_Pagina
+    {
 
         protected int    ordem;                 // Número máximo de páginas que uma página pode conter
         protected int    maxElementos;          // Variável igual a ordem - 1 para facilitar a clareza do código
@@ -38,7 +42,8 @@ public class ArvoreBMais {
         protected int    TAMANHO_PAGINA;        // A página será de tamanho fixo, calculado a partir da ordem
 
         // Construtor da página
-        public ArvoreBMais_Pagina(int o) {
+        public ArvoreBMais_Pagina(int o)
+        {
 
             // Inicialização dos atributos
             n = 0;
@@ -51,7 +56,8 @@ public class ArvoreBMais {
             proxima = -1;
             
             // Criação de uma página vázia
-            for(int i=0; i<maxElementos; i++) {  
+            for(int i=0; i<maxElementos; i++)
+            {
                 chaves1[i] = 0;
                 chaves2[i] = 0;
                 filhos[i] = -1;
@@ -63,7 +69,8 @@ public class ArvoreBMais {
         }
         
         // Retorna o vetor de bytes que representa a página para armazenamento em arquivo
-        protected byte[] getBytes() throws IOException {
+        protected byte[] getBytes() throws IOException
+        {
             
             // Um fluxo de bytes é usado para construção do vetor de bytes
             ByteArrayOutputStream ba = new ByteArrayOutputStream();
@@ -74,7 +81,8 @@ public class ArvoreBMais {
             
             // Escreve todos os elementos
             int i=0;
-            while(i<n) {
+            while(i<n)
+            {
                 out.writeLong(filhos[i]);
                 out.writeInt(chaves1[i]);
                 out.writeInt(chaves2[i]);
@@ -84,7 +92,8 @@ public class ArvoreBMais {
             
             // Completa o restante da página com registros vazios
             byte[] registroVazio = new byte[TAMANHO_REGISTRO];
-            while(i<maxElementos){
+            while(i<maxElementos)
+            {
                 out.write(registroVazio);
                 out.writeLong(filhos[i+1]);
                 i++;
@@ -97,7 +106,8 @@ public class ArvoreBMais {
 
         
         // Reconstrói uma página a partir de um vetor de bytes lido no arquivo
-        public void setBytes(byte[] buffer) throws IOException {
+        public void setBytes(byte[] buffer) throws IOException
+        {
             
             // Usa um fluxo de bytes para leitura dos atributos
             ByteArrayInputStream ba = new ByteArrayInputStream(buffer);
@@ -108,7 +118,8 @@ public class ArvoreBMais {
             
             // Lê todos os elementos (reais ou vazios)
             int i=0;
-            while(i<maxElementos) {
+            while(i<maxElementos)
+            {
                 filhos[i] = in.readLong();
                 chaves1[i] = in.readInt();
                 chaves2[i] = in.readInt();
@@ -121,7 +132,8 @@ public class ArvoreBMais {
     
     // ------------------------------------------------------------------------------
         
-    public ArvoreBMais(int o, String na) throws IOException {
+    public ArvoreBMais(int o, String na) throws IOException
+    {
         
         // Inicializa os atributos da árvore
         ordem = o;
@@ -140,7 +152,8 @@ public class ArvoreBMais {
     }
     
     // Testa se a árvore está vazia. Uma árvore vazia é identificada pela raiz == -1
-    public boolean vazia() throws IOException {
+    public boolean vazia() throws IOException
+    {
         long raiz;
         arquivo.seek(0);
         raiz = arquivo.readLong();
@@ -152,7 +165,8 @@ public class ArvoreBMais {
     // o método recursivo lista1, passando a raiz como referência.
     // O método retorna a lista de elementos que possuem a chave (considerando
     // a possibilidade chaves repetidas)
-    public int[] lista(int c1) throws IOException {
+    public int[] lista(int c1) throws IOException
+    {
         
         // Recupera a raiz da árvore
         long raiz;
@@ -168,7 +182,8 @@ public class ArvoreBMais {
     
     // Busca recursiva. Este método recebe a referência de uma página e busca
     // pela chave na mesma. A busca continua pelos filhos, se houverem.
-    private int[] lista1(int chave1, long pagina) throws IOException {
+    private int[] lista1(int chave1, long pagina) throws IOException
+    {
         
         // Como a busca é recursiva, a descida para um filho inexistente
         // (filho de uma página folha) retorna um vetor vazio.
@@ -187,25 +202,29 @@ public class ArvoreBMais {
         // Nesse primeiro passo, todas as chaves menores que a chave buscada
         // são ultrapassadas
         int i=0;
-        while(i<pa.n && chave1>pa.chaves1[i]) {
+        while(i<pa.n && chave1>pa.chaves1[i])
+        {
             i++;
         }
         
         // Chave encontrada (ou pelo menos o ponto onde ela deveria estar).
         // Segundo passo - testa se a chave é a chave buscada e se está em uma folha
         // Obs.: em uma árvore B+, todas as chaves válidas estão nas folhas
-        if(i<pa.n && pa.filhos[0]==-1 && chave1==pa.chaves1[i]) {
+        if(i<pa.n && pa.filhos[0]==-1 && chave1==pa.chaves1[i])
+        {
 
             // Cria a lista de retorno e insere as chaves secundárias encontradas
             ArrayList lista = new ArrayList();
-            while(chave1<=pa.chaves1[i]) {
+            while(chave1<=pa.chaves1[i])
+            {
                 
                 if(chave1==pa.chaves1[i])
                     lista.add(pa.chaves2[i]);
                 i++;
 
                 // Se chegar ao fim da folha, então avança para a folha seguinte
-                if(i==pa.n) {
+                if(i==pa.n)
+                {
                     if(pa.proxima==-1)
                         break;
                     arquivo.seek(pa.proxima);
@@ -226,7 +245,8 @@ public class ArvoreBMais {
         // Terceiro passo - se a chave não tiver sido encontrada nesta folha, 
         // testa se ela está na próxima folha. Isso pode ocorrer devido ao 
         // processo de ordenação. 
-        else if(i==pa.n && pa.filhos[0]==-1) { 
+        else if(i==pa.n && pa.filhos[0]==-1)
+        {
             
             // Testa se há uma próxima folha. Nesse caso, retorna um vetor vazio
             if(pa.proxima==-1)
@@ -239,18 +259,21 @@ public class ArvoreBMais {
             
             // Testa se a chave é a primeira da próxima folha
             i=0;
-            if(chave1<=pa.chaves1[0]) {
+            if(chave1<=pa.chaves1[0])
+            {
                 
                 // Cria a lista de retorno
                 ArrayList lista = new ArrayList();
                 
                 // Testa se a chave foi encontrada, e adiciona todas as chaves
                 // secundárias
-                while(chave1<=pa.chaves1[i]) {
+                while(chave1<=pa.chaves1[i])
+                {
                     if(chave1==pa.chaves1[i])
                         lista.add(pa.chaves2[i]);
                     i++;
-                    if(i==pa.n) {
+                    if(i==pa.n)
+                    {
                         if(pa.proxima==-1)
                             break;
                         arquivo.seek(pa.proxima);
@@ -283,10 +306,12 @@ public class ArvoreBMais {
     // Inclusão de novos elementos na árvore. A inclusão é recursiva. A primeira
     // função chama a segunda recursivamente, passando a raiz como referência.
     // Eventualmente, a árvore pode crescer para cima.
-    public boolean inserir(int c1, int c2) throws IOException {
+    public boolean inserir(int c1, int c2) throws IOException
+    {
 
         // Validação das chaves
-        if(c1<0 || c2<0) {
+        if(c1<0 || c2<0)
+        {
             System.out.println( "Chaves não podem ser negativas" );
             return false;
         }
@@ -313,7 +338,8 @@ public class ArvoreBMais {
         boolean inserido = inserir1(pagina);
         
         // Testa a necessidade de criação de uma nova raiz.
-        if(cresceu) {
+        if(cresceu)
+        {
             
             // Cria a nova página que será a raiz. O ponteiro esquerdo da raiz
             // será a raiz antiga e o seu ponteiro direito será para a nova página.
@@ -339,11 +365,13 @@ public class ArvoreBMais {
     
     // Função recursiva de inclusão. A função passa uma página de referência.
     // As inclusões são sempre feitas em uma folha.
-    private boolean inserir1(long pagina) throws IOException {
+    private boolean inserir1(long pagina) throws IOException
+    {
         
         // Testa se passou para o filho de uma página folha. Nesse caso, 
         // inicializa as variáveis globais de controle.
-        if(pagina==-1) {
+        if(pagina==-1)
+        {
             cresceu = true;
             paginaExtra = -1;
             return false;
@@ -360,13 +388,15 @@ public class ArvoreBMais {
         // da primeira chave, a segunda também é usada como referência.
         // Nesse primeiro passo, todos os pares menores são ultrapassados.
         int i=0;
-        while(i<pa.n && (chave1Extra>pa.chaves1[i] || (chave1Extra==pa.chaves1[i] && chave2Extra>pa.chaves2[i]))) {
+        while(i<pa.n && (chave1Extra>pa.chaves1[i] || (chave1Extra==pa.chaves1[i] && chave2Extra>pa.chaves2[i])))
+        {
             i++;
         }
         
         // Testa se o registro já existe em uma folha. Se isso acontecer, então 
         // a inclusão é cancelada.
-        if(i<pa.n && pa.filhos[0]==-1 && chave1Extra==pa.chaves1[i] && chave2Extra==pa.chaves2[i]) {
+        if(i<pa.n && pa.filhos[0]==-1 && chave1Extra==pa.chaves1[i] && chave2Extra==pa.chaves2[i])
+        {
             cresceu = false;
             return false;
         }
@@ -390,11 +420,13 @@ public class ArvoreBMais {
             return inserido;
         
         // Se tiver espaço na página, faz a inclusão nela mesmo
-        if(pa.n<maxElementos) {
+        if(pa.n<maxElementos)
+        {
 
             // Puxa todos elementos para a direita, começando do último
             // para gerar o espaço para o novo elemento
-            for(int j=pa.n; j>i; j--) {
+            for(int j=pa.n; j>i; j--)
+            {
                 pa.chaves1[j] = pa.chaves1[j-1];
                 pa.chaves2[j] = pa.chaves2[j-1];
                 pa.filhos[j+1] = pa.filhos[j];
@@ -424,7 +456,8 @@ public class ArvoreBMais {
         // Copia a metade superior dos elementos para a nova página,
         // considerando que maxElementos pode ser ímpar
         int meio = maxElementos/2;
-        for(int j=0; j<(maxElementos-meio); j++) {    
+        for(int j=0; j<(maxElementos-meio); j++)
+        {
             
             // copia o elemento
             np.chaves1[j] = pa.chaves1[j+meio];
@@ -442,10 +475,12 @@ public class ArvoreBMais {
         
         // Testa o lado de inserção
         // Novo registro deve ficar na página da esquerda
-        if(i<=meio) {   
+        if(i<=meio)
+        {
             
             // Puxa todos os elementos para a direita
-            for(int j=meio; j>0 && j>i; j--) {
+            for(int j=meio; j>0 && j>i; j--)
+            {
                 pa.chaves1[j] = pa.chaves1[j-1];
                 pa.chaves2[j] = pa.chaves2[j-1];
                 pa.filhos[j+1] = pa.filhos[j];
@@ -459,14 +494,16 @@ public class ArvoreBMais {
             
             // Se a página for folha, seleciona o primeiro elemento da página 
             // da direita para ser promovido, mantendo-o na folha
-            if(pa.filhos[0]==-1) {
+            if(pa.filhos[0]==-1)
+            {
                 chave1Extra = np.chaves1[0];
                 chave2Extra = np.chaves2[0];
             }
             
             // caso contrário, promove o maior elemento da página esquerda
             // removendo-o da página
-            else {
+            else
+            {
                 chave1Extra = pa.chaves1[pa.n-1];
                 chave2Extra = pa.chaves2[pa.n-1];
                 pa.chaves1[pa.n-1] = 0;
@@ -477,9 +514,11 @@ public class ArvoreBMais {
         } 
         
         // Novo registro deve ficar na página da direita
-        else {
+        else
+        {
             int j=0;
-            for(j=maxElementos-meio; j>0 && (chave1Extra<np.chaves1[j-1] || (chave1Extra==np.chaves1[j-1]&&chave2Extra<np.chaves2[j-1]) ); j--) {
+            for(j=maxElementos-meio; j>0 && (chave1Extra<np.chaves1[j-1] || (chave1Extra==np.chaves1[j-1]&&chave2Extra<np.chaves2[j-1]) ); j--)
+            {
                 np.chaves1[j] = np.chaves1[j-1];
                 np.chaves2[j] = np.chaves2[j-1];
                 np.filhos[j+1] = np.filhos[j];
@@ -494,8 +533,10 @@ public class ArvoreBMais {
             chave2Extra = np.chaves2[0];
             
             // Se não for folha, remove o elemento promovido da página
-            if(pa.filhos[0]!=-1) {
-                for(j=0; j<np.n-1; j++) {
+            if(pa.filhos[0]!=-1)
+            {
+                for(j=0; j<np.n-1; j++)
+                {
                     np.chaves1[j] = np.chaves1[j+1];
                     np.chaves2[j] = np.chaves2[j+1];
                     np.filhos[j] = np.filhos[j+1];
@@ -513,7 +554,8 @@ public class ArvoreBMais {
         
         // Se a página era uma folha e apontava para outra folha, 
         // então atualiza os ponteiros dessa página e da página nova
-        if(pa.filhos[0]==-1) {
+        if(pa.filhos[0]==-1)
+        {
             np.proxima=pa.proxima;
             pa.proxima = arquivo.length();
         }
@@ -533,7 +575,8 @@ public class ArvoreBMais {
     // Remoção elementos na árvore. A remoção é recursiva. A primeira
     // função chama a segunda recursivamente, passando a raiz como referência.
     // Eventualmente, a árvore pode reduzir seu tamanho, por meio da exclusão da raiz.
-    public boolean excluir(int chave1, int chave2) throws IOException {
+    public boolean excluir(int chave1, int chave2) throws IOException
+    {
                 
         // Encontra a raiz da árvore
         arquivo.seek(0);       
@@ -549,7 +592,8 @@ public class ArvoreBMais {
         
         // Se a exclusão tiver sido possível e a página tiver reduzido seu tamanho,
         // por meio da fusão das duas páginas filhas da raiz, elimina essa raiz
-        if(excluido && diminuiu) {
+        if(excluido && diminuiu)
+        {
             
             // Lê a raiz
             arquivo.seek(pagina);
@@ -560,7 +604,8 @@ public class ArvoreBMais {
             
             // Se a página tiver 0 elementos, apenas atualiza o ponteiro para a raiz,
             // no cabeçalho do arquivo, para o seu primeiro filho.
-            if(pa.n == 0) {
+            if(pa.n == 0)
+            {
                 arquivo.seek(0);
                 arquivo.writeLong(pa.filhos[0]);  
             }
@@ -572,7 +617,8 @@ public class ArvoreBMais {
 
     // Função recursiva de exclusão. A função passa uma página de referência.
     // As exclusões são sempre feitas em folhas e a fusão é propagada para cima.
-    private boolean excluir1(int chave1, int chave2, long pagina) throws IOException {
+    private boolean excluir1(int chave1, int chave2, long pagina) throws IOException
+    {
         
         // Inicialização de variáveis
         boolean excluido=false;
@@ -580,7 +626,8 @@ public class ArvoreBMais {
         
         // Testa se o registro não foi encontrado na árvore, ao alcançar uma folha
         // inexistente (filho de uma folha real)
-        if(pagina==-1) {
+        if(pagina==-1)
+        {
             diminuiu=false;
             return false;
         }
@@ -595,17 +642,20 @@ public class ArvoreBMais {
         // Encontra a página em que o par de chaves está presente
         // Nesse primeiro passo, salta todas os pares de chaves menores
         int i=0;
-        while(i<pa.n && (chave1>pa.chaves1[i] || (chave1==pa.chaves1[i] && chave2>pa.chaves2[i]))) {
+        while(i<pa.n && (chave1>pa.chaves1[i] || (chave1==pa.chaves1[i] && chave2>pa.chaves2[i])))
+        {
             i++;
         }
 
         // Chaves encontradas em uma folha
-        if(i<pa.n && pa.filhos[0]==-1 && chave1==pa.chaves1[i] && chave2==pa.chaves2[i]) {
+        if(i<pa.n && pa.filhos[0]==-1 && chave1==pa.chaves1[i] && chave2==pa.chaves2[i])
+        {
 
             // Puxa todas os elementos seguintes para uma posição anterior, sobrescrevendo
             // o elemento a ser excluído
             int j;
-            for(j=i; j<pa.n-1; j++) {
+            for(j=i; j<pa.n-1; j++)
+            {
                 pa.chaves1[j] = pa.chaves1[j+1];
                 pa.chaves2[j] = pa.chaves2[j+1];
             }
@@ -631,10 +681,13 @@ public class ArvoreBMais {
         // A variável diminuído mantem um registro de qual página eventualmente 
         // pode ter ficado com menos elementos do que o mínimo necessário.
         // Essa página será filha da página atual
-        if(i==pa.n || chave1<pa.chaves1[i] || (chave1==pa.chaves1[i] && chave2<pa.chaves2[i])) {
+        if(i==pa.n || chave1<pa.chaves1[i] || (chave1==pa.chaves1[i] && chave2<pa.chaves2[i]))
+        {
             excluido = excluir1(chave1, chave2, pa.filhos[i]);
             diminuido = i;
-        } else {
+        }
+        else
+        {
             excluido = excluir1(chave1, chave2, pa.filhos[i+1]);
             diminuido = i+1;
         }
@@ -644,7 +697,8 @@ public class ArvoreBMais {
         // recursivas do método
         
         // Testa se há necessidade de fusão de páginas
-        if(diminuiu) {
+        if(diminuiu)
+        {
 
             // Carrega a página filho que ficou com menos elementos do 
             // do que o mínimo necessário
@@ -659,7 +713,8 @@ public class ArvoreBMais {
             ArvoreBMais_Pagina pIrmao;
             
             // Tenta a fusão com irmão esquerdo
-            if(diminuido>0) {
+            if(diminuido>0)
+            {
                 
                 // Carrega o irmão esquerdo
                 paginaIrmao = pa.filhos[diminuido-1];
@@ -669,11 +724,13 @@ public class ArvoreBMais {
                 pIrmao.setBytes(buffer);
                 
                 // Testa se o irmão pode ceder algum registro
-                if(pIrmao.n>maxElementos/2) {
+                if(pIrmao.n>maxElementos/2)
+                {
                     
                     // Move todos os elementos do filho aumentando uma posição
                     // à esquerda, gerando espaço para o elemento cedido
-                    for(int j=pFilho.n; j>0; j--) {
+                    for(int j=pFilho.n; j>0; j--)
+                    {
                         pFilho.chaves1[j] = pFilho.chaves1[j-1];
                         pFilho.chaves2[j] = pFilho.chaves2[j-1];
                         pFilho.filhos[j+1] = pFilho.filhos[j];
@@ -683,13 +740,15 @@ public class ArvoreBMais {
                     
                     // Se for folha, copia o elemento do irmão, já que o do pai
                     // será extinto ou repetido
-                    if(pFilho.filhos[0]==-1) {
+                    if(pFilho.filhos[0]==-1)
+                    {
                         pFilho.chaves1[0] = pIrmao.chaves1[pIrmao.n-1];
                         pFilho.chaves2[0] = pIrmao.chaves2[pIrmao.n-1];
                     }
                     
                     // Se não for folha, rotaciona os elementos, descendo o elemento do pai
-                    else {
+                    else
+                    {
                         pFilho.chaves1[0] = pa.chaves1[diminuido-1];
                         pFilho.chaves2[0] = pa.chaves2[diminuido-1];
                     }
@@ -706,11 +765,13 @@ public class ArvoreBMais {
                 }
                 
                 // Se não puder ceder, faz a fusão dos dois irmãos
-                else {
+                else
+                {
 
                     // Se a página reduzida não for folha, então o elemento 
                     // do pai deve ser copiado para o irmão
-                    if(pFilho.filhos[0] != -1) {
+                    if(pFilho.filhos[0] != -1)
+                    {
                         pIrmao.chaves1[pIrmao.n] = pa.chaves1[diminuido-1];
                         pIrmao.chaves2[pIrmao.n] = pa.chaves2[diminuido-1];
                         pIrmao.filhos[pIrmao.n+1] = pFilho.filhos[0];
@@ -719,7 +780,8 @@ public class ArvoreBMais {
                     
                     
                     // Copia todos os registros para o irmão da esquerda
-                    for(int j=0; j<pFilho.n; j++) {
+                    for(int j=0; j<pFilho.n; j++)
+                    {
                         pIrmao.chaves1[pIrmao.n] = pFilho.chaves1[j];
                         pIrmao.chaves2[pIrmao.n] = pFilho.chaves2[j];
                         pIrmao.filhos[pIrmao.n+1] = pFilho.filhos[j+1];
@@ -733,7 +795,8 @@ public class ArvoreBMais {
                     
                     // puxa os registros no pai
                     int j;
-                    for(j=diminuido-1; j<pa.n-1; j++) {
+                    for(j=diminuido-1; j<pa.n-1; j++)
+                    {
                         pa.chaves1[j] = pa.chaves1[j+1];
                         pa.chaves2[j] = pa.chaves2[j+1];
                         pa.filhos[j+1] = pa.filhos[j+2];
@@ -747,7 +810,8 @@ public class ArvoreBMais {
             }
             
             // Faz a fusão com o irmão direito
-            else {
+            else
+            {
                 
                 // Carrega o irmão
                 paginaIrmao = pa.filhos[diminuido+1];
@@ -757,10 +821,12 @@ public class ArvoreBMais {
                 pIrmao.setBytes(buffer);
                 
                 // Testa se o irmão pode ceder algum elemento
-                if(pIrmao.n>maxElementos/2) {
+                if(pIrmao.n>maxElementos/2)
+                {
                     
                     // Se for folha
-                    if( pFilho.filhos[0]==-1 ) {
+                    if( pFilho.filhos[0]==-1 )
+                    {
                     
                         //copia o elemento do irmão
                         pFilho.chaves1[pFilho.n] = pIrmao.chaves1[0];
@@ -775,7 +841,8 @@ public class ArvoreBMais {
                     } 
                     
                     // Se não for folha, rotaciona os elementos
-                    else {
+                    else
+                    {
                         
                         // Copia o elemento do pai, com o ponteiro esquerdo do irmão
                         pFilho.chaves1[pFilho.n] = pa.chaves1[diminuido];
@@ -790,7 +857,8 @@ public class ArvoreBMais {
                     
                     // move todos os registros no irmão para a esquerda
                     int j;
-                    for(j=0; j<pIrmao.n-1; j++) {
+                    for(j=0; j<pIrmao.n-1; j++)
+                    {
                         pIrmao.chaves1[j] = pIrmao.chaves1[j+1];
                         pIrmao.chaves2[j] = pIrmao.chaves2[j+1];
                         pIrmao.filhos[j] = pIrmao.filhos[j+1];
@@ -801,11 +869,13 @@ public class ArvoreBMais {
                 }
                 
                 // Se não puder ceder, faz a fusão dos dois irmãos
-                else {
+                else
+                {
 
                     // Se a página reduzida não for folha, então o elemento 
                     // do pai deve ser copiado para o irmão
-                    if(pFilho.filhos[0] != -1) {
+                    if(pFilho.filhos[0] != -1)
+                    {
                         pFilho.chaves1[pFilho.n] = pa.chaves1[diminuido];
                         pFilho.chaves2[pFilho.n] = pa.chaves2[diminuido];
                         pFilho.filhos[pFilho.n+1] = pIrmao.filhos[0];
@@ -813,7 +883,8 @@ public class ArvoreBMais {
                     }
                     
                     // Copia todos os registros do irmão da direita
-                    for(int j=0; j<pIrmao.n; j++) {
+                    for(int j=0; j<pIrmao.n; j++)
+                    {
                         pFilho.chaves1[pFilho.n] = pIrmao.chaves1[j];
                         pFilho.chaves2[pFilho.n] = pIrmao.chaves2[j];
                         pFilho.filhos[pFilho.n+1] = pIrmao.filhos[j+1];
@@ -825,7 +896,8 @@ public class ArvoreBMais {
                     pFilho.proxima = pIrmao.proxima;
                     
                     // puxa os registros no pai
-                    for(int j=diminuido; j<pa.n-1; j++) {
+                    for(int j=diminuido; j<pa.n-1; j++)
+                    {
                         pa.chaves1[j] = pa.chaves1[j+1];
                         pa.chaves2[j] = pa.chaves2[j+1];
                         pa.filhos[j+1] = pa.filhos[j+2];
@@ -849,7 +921,8 @@ public class ArvoreBMais {
     
     // Imprime a árvore, usando uma chamada recursiva.
     // A função recursiva é chamada com uma página de referência (raiz)
-    public void print() throws IOException {
+    public void print() throws IOException
+    {
         long raiz;
         arquivo.seek(0);
         raiz = arquivo.readLong();
@@ -859,7 +932,8 @@ public class ArvoreBMais {
     }
     
     // Impressão recursiva
-    private void print1(long pagina) throws IOException {
+    private void print1(long pagina) throws IOException
+    {
         
         // Retorna das chamadas recursivas
         if(pagina==-1)
@@ -876,7 +950,8 @@ public class ArvoreBMais {
         // Imprime a página
         String endereco = String.format("%04d", pagina);
         System.out.print(endereco+"  " + pa.n +":"); // endereço e número de elementos
-        for(i=0; i<maxElementos; i++) {
+        for(i=0; i<maxElementos; i++)
+        {
             System.out.print("("+String.format("%04d",pa.filhos[i])+") "+String.format("%2d",pa.chaves1[i])+","+String.format("%2d",pa.chaves2[i])+" ");
         }
         System.out.print("("+String.format("%04d",pa.filhos[i])+")");
@@ -886,7 +961,8 @@ public class ArvoreBMais {
             System.out.println(" --> ("+String.format("%04d", pa.proxima)+")");
         
         // Chama recursivamente cada filho, se a página não for folha
-        if(pa.filhos[0] != -1) {
+        if(pa.filhos[0] != -1)
+        {
             for(i=0; i<pa.n; i++)
                 print1(pa.filhos[i]);
             print1(pa.filhos[i]);
@@ -894,11 +970,13 @@ public class ArvoreBMais {
     }
     
     
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
 
         ArvoreBMais arvore;
         
-        try {
+        try
+        {
             
             File f = new File("dados.db");
             f.delete();
@@ -923,7 +1001,8 @@ public class ArvoreBMais {
             
             System.out.println("Lista de chaves2 de 20:");
             int[] lista = arvore.lista(20);
-            for(int i=0; i<lista.length; i++) {
+            for(int i=0; i<lista.length; i++)
+            {
                 System.out.print(lista[i]+"  ");
             }
             System.out.println("\n");
@@ -985,7 +1064,8 @@ public class ArvoreBMais {
 
             System.out.println("Lista de chaves2 de 20:");
             lista = arvore.lista(20);
-            for(int i=0; i<lista.length; i++) {
+            for(int i=0; i<lista.length; i++)
+            {
                 System.out.print(lista[i]+" ");
             }
             System.out.println("\n");
@@ -1012,7 +1092,8 @@ public class ArvoreBMais {
             int chave = 1;
             System.out.print("Lista de chaves2 de "+chave+": ");
             lista = arvore.lista(chave);
-            for(int i=0; i<lista.length; i++) {
+            for(int i=0; i<lista.length; i++)
+            {
                 System.out.print(lista[i]+" ");
             }
             System.out.println("\n");
@@ -1020,7 +1101,8 @@ public class ArvoreBMais {
             chave = 2;
             System.out.print("Lista de chaves2 de "+chave+": ");
             lista = arvore.lista(chave);
-            for(int i=0; i<lista.length; i++) {
+            for(int i=0; i<lista.length; i++)
+            {
                 System.out.print(lista[i]+" ");
             }
             System.out.println("\n");
@@ -1028,7 +1110,8 @@ public class ArvoreBMais {
             chave = 3;
             System.out.print("Lista de chaves2 de "+chave+": ");
             lista = arvore.lista(chave);
-            for(int i=0; i<lista.length; i++) {
+            for(int i=0; i<lista.length; i++)
+            {
                 System.out.print(lista[i]+" ");
             }
             System.out.println("\n");
@@ -1036,7 +1119,8 @@ public class ArvoreBMais {
             chave = 4;
             System.out.print("Lista de chaves2 de "+chave+": ");
             lista = arvore.lista(chave);
-            for(int i=0; i<lista.length; i++) {
+            for(int i=0; i<lista.length; i++)
+            {
                 System.out.print(lista[i]+" ");
             }
             System.out.println("\n");
@@ -1044,7 +1128,8 @@ public class ArvoreBMais {
             chave = 10;
             System.out.print("Lista de chaves2 de "+chave+": ");
             lista = arvore.lista(chave);
-            for(int i=0; i<lista.length; i++) {
+            for(int i=0; i<lista.length; i++)
+            {
                 System.out.print(lista[i]+" ");
             }
             System.out.println("\n");
@@ -1052,13 +1137,15 @@ public class ArvoreBMais {
             chave = 30;
             System.out.print("Lista de chaves2 de "+chave+": ");
             lista = arvore.lista(chave);
-            for(int i=0; i<lista.length; i++) {
+            for(int i=0; i<lista.length; i++)
+            {
                 System.out.print(lista[i]+" ");
             }
             System.out.println("\n");
 
         }
-        catch(Exception e) {
+        catch(Exception e)
+        {
             e.printStackTrace();
         }
             

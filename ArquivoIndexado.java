@@ -1,3 +1,5 @@
+package packageone;
+
 import java.io.*;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -10,7 +12,7 @@ public class ArquivoIndexado<T extends Registro>
     public String nomeListaCestos;
     public RandomAccessFile arquivo;
     Constructor<T> construtor;
-    private HashExtensivel índice;
+    private HashExtensivel indice;
     
     public ArquivoIndexado(Constructor<T> c, String n) throws Exception
     {
@@ -25,7 +27,7 @@ public class ArquivoIndexado<T extends Registro>
         
         nomeDiretorio = "diretorio."+nomeArquivo;
         nomeListaCestos = "cestos."+nomeArquivo;
-        índice = new HashExtensivel(4, nomeDiretorio, nomeListaCestos);
+        indice = new HashExtensivel(4, nomeDiretorio, nomeListaCestos);
     }
     
     public int incluir(T obj) throws Exception
@@ -43,7 +45,7 @@ public class ArquivoIndexado<T extends Registro>
         byte[] byteArray = obj.toByteArray();
         arquivo.writeInt(byteArray.length); // indicador de tamanho do registro
         arquivo.write(byteArray);           // vetor de bytes que representa o registro
-        índice.insere(ultimoID, endereco);
+        indice.insere(ultimoID, endereco);
         return obj.getID();
     }
     
@@ -78,7 +80,7 @@ public class ArquivoIndexado<T extends Registro>
         int s;
         T obj;
 
-        long endereco = índice.busca(id);
+        long endereco = indice.busca(id);
         if(endereco!=-1)
         {
             obj = construtor.newInstance();
@@ -96,12 +98,12 @@ public class ArquivoIndexado<T extends Registro>
     
     public boolean excluir(int id) throws Exception
     {
-        long endereco = índice.busca(id);
+        long endereco = indice.busca(id);
         if(endereco!=-1)
         {
             arquivo.seek(endereco);
             arquivo.writeByte('*');
-            índice.remove(id);
+            indice.remove(id);
             return true;
         }
         else
