@@ -1,10 +1,7 @@
 package packageone;
 
-import java.io.File;
-import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
-import java.util.Scanner;
 
 public class CrudJogos
 {
@@ -49,14 +46,14 @@ public class CrudJogos
                     menuBuscarJogo();
                 else if(comando==3)
                     menuIncluirJogo();
-                /*else if(comando==4)
+                else if(comando==4)
                     menuExcluirJogo();
                 else if(comando==5)
                     menuListarJogosPorPlataforma();
                 else if(comando==6)
                     menuListarJogosPorGenero();
                 else if(comando==7)
-                    menuListarGenerosDeJogosDisponiveis();
+                    menuListarGenero();
                 else if(comando==8)
                     menuInserirGeneroDeJogo();
                 else if(comando==9)
@@ -64,7 +61,7 @@ public class CrudJogos
                 else if(comando==10)
                     menuInserirPlataforma();
                 else if(comando==11)
-                    menuPovoarBancoDeDados();*/
+                    menuPovoarBancoDeDados();
             }
             catch(Exception e)
             {
@@ -246,10 +243,10 @@ public class CrudJogos
         }
         while(adicionarMaisPlataformas=='s');
 
-        incluirJogo(titulo, score, genero, plataformas);
+        inserirJogo(titulo, score, genero, plataformas);
     }
 
-    public static void incluirJogo(String titulo, byte score, String nomeDoGenero, ArrayList<String> nomeDaPlataforma) throws  Exception
+    public static void inserirJogo(String titulo, byte score, String nomeDoGenero, ArrayList<String> nomeDaPlataforma) throws  Exception
     {
         Genero genero=getGenero(nomeDoGenero);
         if(genero==null)
@@ -279,6 +276,14 @@ public class CrudJogos
             idxJogoparaJdp.inserir(idJogo, idJogosDaPlataforma);
             idxPlataformaparaJdp.inserir(idPlataformas.get(i), idJogosDaPlataforma);
         }
+    }
+
+    public static void inserirJogo(String titulo, byte score, String nomeDoGenero, String ... nomeDaPlataforma) throws Exception
+    {
+        ArrayList<String> plataforma=new ArrayList<>();
+        for(int i=0;i<nomeDaPlataforma.length;i++)
+            plataforma.add(nomeDaPlataforma[i]);
+        inserirJogo(titulo, score, nomeDoGenero, plataforma);
     }
 
     public static Genero getGenero(String nomeDoGenero) throws Exception
@@ -341,5 +346,309 @@ public class CrudJogos
             resp=plataforma.get(i);
 
         return resp;
+    }
+
+    public static void menuExcluirJogo() throws Exception
+    {
+        MyIO.println("\nEXCLUSÃO");
+
+        int id=0;
+        boolean repetir=false;
+        do
+        {
+            try
+            {
+                id=MyIO.readInt("ID: ");
+                if(id<=0)
+                    throw new InputMismatchException("Entrada Invalida!");
+                repetir=false;
+            }
+            catch(InputMismatchException e)
+            {
+                MyIO.println(e.toString());
+                repetir=true;
+            }
+        }
+        while(repetir);
+
+        Jogo jogo=(Jogo)arqJogos.buscar(id);
+        if(jogo!=null)
+        {
+            MyIO.println(jogo.toString());
+            char confirmacao=' ';
+            boolean repetir1;
+            do
+            {
+                try
+                {
+                    confirmacao=MyIO.readLine("\nConfirma exclusão? ").toLowerCase().charAt(0);
+                    if(confirmacao!='s' && confirmacao!='n')
+                        throw new InputMismatchException("Entrada Invalida!");
+                    repetir1=false;
+                }
+                catch(InputMismatchException e)
+                {
+                    MyIO.println(e.toString());
+                    repetir1=true;
+                }
+            }
+            while(repetir1);
+
+            if(confirmacao=='s')
+                excliurJogo(id);
+        }
+    }
+
+    public static boolean excliurJogo(int id) throws Exception
+    {
+        Jogo jogo=(Jogo)arqJogos.buscar(id);
+        boolean resp=false;
+        if(arqJogos.excluir(id))
+        {
+            idxJogoporGenero.excluir(jogo.getIdGenero(),id);
+            int[] idsjdp = idxJogoparaJdp.lista(jogo.getID());
+            for(int i = 0;i<idsjdp.length;i++)
+            {
+                idxJogoparaJdp.excluir(idsjdp[i],jogo.getID());
+                JogosDaPlataforma jdp = (JogosDaPlataforma)arqJogosDaPlataforma.buscar(idsjdp[i]);
+                idxPlataformaparaJdp.excluir(idsjdp[i],jdp.getIdPlataforma());
+                arqJogosDaPlataforma.excluir(idsjdp[i]);
+            }
+            resp=true;
+        }
+        return resp;
+    }
+
+    public static void menuListarJogosPorPlataforma() throws Exception
+    {
+        menuListarPlataformas();
+        int idplataforma=-1;
+        boolean repetir=false;
+        do
+        {
+            try
+            {
+                idplataforma=MyIO.readInt("DIGITE O NUMERO DE UMA PLATAFORMA");
+                if(idplataforma<=0)
+                    throw new InputMismatchException("Entrada Invalida!");
+                repetir=false;
+            }
+            catch(InputMismatchException e)
+            {
+                MyIO.println(e.toString());
+                repetir=true;
+            }
+        }
+        while(repetir);
+        int[] idsDosJdp = idxPlataformaparaJdp.lista(idplataforma);
+        MyIO.println(idsDosJdp.length);
+        for(int i=0;i<idsDosJdp.length;i++)
+        {
+            JogosDaPlataforma jogosDaPlataforma = (JogosDaPlataforma)arqJogosDaPlataforma.buscar(idsDosJdp[i]);
+            Jogo jogo = (Jogo) arqJogos.buscar(jogosDaPlataforma.getIdJogo());
+            MyIO.println(jogo.toString());
+        }
+    }
+
+    public static void menuListarPlataformas() throws Exception
+    {
+        if(arqPlataformas==null)
+            MyIO.println("Nenhuma plataforma registrada");
+        else
+        {
+            Object plataformas[]=arqPlataformas.listar();
+            if(plataformas.length==0)
+                MyIO.println("Nenhuma plataforma registrada");
+            else
+            {
+                for(int i=0;i<plataformas.length;i++)
+                {
+                    Plataforma plataforma=(Plataforma)plataformas[i];
+                    MyIO.println(plataforma.getID()+" "+plataforma.getNome()+" ");
+                }
+                MyIO.println();
+            }
+        }
+    }
+
+    public static void menuListarJogosPorGenero() throws Exception
+    {
+        MyIO.println("Dentre os generos listados abaixo digite o id do genero desejado");
+        menuListarGenero();
+        int idGenero=-1;
+        boolean repetir=false;
+        do
+        {
+            try
+            {
+                idGenero=MyIO.readInt();
+                if(idGenero<=0)
+                    throw new InputMismatchException("Entrada Invalida");
+                repetir=false;
+            }
+            catch(InputMismatchException e)
+            {
+                MyIO.println(e.toString());
+                repetir=true;
+            }
+        }
+        while(repetir);
+
+        Genero genero=(Genero)arqGeneros.buscar(idGenero);
+        if(genero!=null)
+        {
+            MyIO.println(genero.getID() + ": " + genero.getTipo());
+            MyIO.println("Jogos: -------------");
+
+            int[] idsDosJogos = idxJogoporGenero.lista(idGenero);
+            for(int i=0;i<idsDosJogos.length;i++)
+            {
+                Jogo jogo = (Jogo)arqJogos.buscar(idsDosJogos[i]);
+                MyIO.println(jogo.toString());
+            }
+        }
+        else
+            MyIO.println("Genero não encontrado");
+        MyIO.pause();
+    }
+
+    public static void menuListarGenero() throws Exception
+    {
+        if(arqGeneros==null)
+            MyIO.println("Nenhum genero registrado");
+        else
+        {
+            Object generos[]=arqGeneros.listar();
+            if(generos.length==0)
+                MyIO.println("Nenhum genero registrado");
+            else
+            {
+                for(int i=0; i<generos.length; i++)
+                {
+                    Genero genero = (Genero)generos[i];
+                    MyIO.print(genero.getID()+" "+genero.getTipo()+" ");
+                }
+                MyIO.println();
+            }
+        }
+    }
+
+    public static void menuInserirGeneroDeJogo() throws Exception
+    {
+        MyIO.println("\nINCLUSÃO");
+        String tipo=MyIO.readLine("Tipo: ");
+        char confirmacao=' ';
+        boolean repetir;
+        do
+        {
+            try
+            {
+                confirmacao=MyIO.readLine("\nConfirma inclusão? ").toLowerCase().charAt(0);
+                if(confirmacao!='s' && confirmacao!='n')
+                    throw new InputMismatchException("Entrada Invalida!");
+                repetir=false;
+            }
+            catch(InputMismatchException e)
+            {
+                MyIO.println(e.toString());
+                repetir=true;
+            }
+        }
+        while(repetir);
+
+        if(confirmacao=='s')
+            MyIO.println("Genero incluido com ID: "+inserirGenero(tipo));
+    }
+
+    public static int inserirGenero(String nomeDoGenero) throws Exception
+    {
+        Genero genero=new Genero(-1, nomeDoGenero);
+        return arqGeneros.incluir(genero);
+    }
+
+    public static void menuListarPlataformasDisponiveis() throws Exception
+    {
+        MyIO.println("Plataformas disponiveis");
+        menuListarPlataformas();
+    }
+
+    public static void menuInserirPlataforma() throws Exception
+    {
+        MyIO.println("\nINCLUSÃO");
+        String nome=MyIO.readLine("Nome: ");
+        char confirmacao=' ';
+        boolean repetir;
+        do
+        {
+            try
+            {
+                confirmacao=MyIO.readLine("\nConfirma inclusão? ").toLowerCase().charAt(0);
+                if(confirmacao!='s' && confirmacao!='n')
+                    throw new InputMismatchException("Entrada Invalida!");
+                repetir=false;
+            }
+            catch(InputMismatchException e)
+            {
+                MyIO.println(e.toString());
+                repetir=true;
+            }
+        }
+        while(repetir);
+
+        if(confirmacao=='s')
+            MyIO.println("Plataforma incluída com ID: "+inserirPlataforma(nome));
+
+    }
+
+    public static int inserirPlataforma(String nomeDaPlataforma) throws Exception
+    {
+        Plataforma plataforma=new Plataforma(-1, nomeDaPlataforma);
+        return arqPlataformas.incluir(plataforma);
+    }
+
+    public static void menuPovoarBancoDeDados() throws Exception
+    {
+        //Plataformas
+        inserirPlataforma("PlayStation One");
+        inserirPlataforma("PlayStation 2");
+        inserirPlataforma("PlayStation 3");
+        inserirPlataforma("PlayStation 4");
+        inserirPlataforma("Xbox");
+        inserirPlataforma("Xbox 360");
+        inserirPlataforma("Xbox One");
+        inserirPlataforma("Nintendo GameCube");
+        inserirPlataforma("Nintendo Wii");
+        inserirPlataforma("Nintendo WiiU");
+        inserirPlataforma("Nintendo DS");
+        inserirPlataforma("Nintendo 3DS");
+        inserirPlataforma("Nintendo Switch");
+        inserirPlataforma("Windows");
+        inserirPlataforma("Mac OS");
+        inserirPlataforma("Linux");
+        inserirPlataforma("Android");
+        inserirPlataforma("iOS");
+        inserirPlataforma("Windows Phone");
+
+        //Generos
+        inserirGenero("FPS");
+        inserirGenero("MOBA");
+        inserirGenero("Battle Royale");
+        inserirGenero("Esportes");
+        inserirGenero("Acao");
+        inserirGenero("Aventura");
+        inserirGenero("RPG");
+
+        //Jogos
+        inserirJogo("Counter Strike: Global Offensive", (byte)83, "Windows", "Mac OS", "Linux", "Xbox", "Xbox 360");
+        inserirJogo("World of Warcraft", (byte)93, "MOBA","Windows", "Mac OS");
+        inserirJogo("WatchDogs 2", (byte)82, "Acao", "Windows", "PlayStation 4", "Xbox One");
+        inserirJogo("Assassin's Creed Unity", (byte)70, "Acao", "Windows", "PlayStation 4", "Xbox One");
+        /*inserirJogo("Assassin's Creed III", (byte)72, "Acao", "Windows", "PlayStation 3", "PlayStation 4", "Xbox 360", "Xbox One", "WiiU");
+        inserirJogo("Overwatch", (byte)91, "FPS", "Windows", "PlayStation 4", "Xbox One", "Nintendo Switch");
+        inserirJogo("Assassin's Creed Rougue", (byte)74, "Acao", "PlayStation 3", "Xbox 360", "Windows", "PlayStation 4", "Xbox One", "Nintendo Switch");
+        inserirJogo("Battlefield 1", (byte)88, "FPS", "Windows", "PlayStation 4", "Xbox One");
+        inserirJogo("FarCry 4", (byte)85, "FPS", "Windows", "PlayStation 4", "PlayStation 3", "Xbox 360", "Xbox One");
+        inserirJogo("Need for Speed Rivals", (byte)80, "Corrida", "Windows", "PlayStation 3", "PlayStation 4", "Xbox 360", "Xbox One");
+        inserirJogo("Call of Duty Black Ops III", (byte)81, "FPS", "Windows", "Mac OS", "PlayStation 3", "PlayStation 4", "Xbox 360", "Xbox One");*/
     }
 }
