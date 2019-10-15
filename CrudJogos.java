@@ -1,7 +1,8 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.InputMismatchException;
 
-public class CrudJogos
+class CrudJogos
 {
     private static ArquivoIndexado<Jogo> arqJogos;
     private static ArquivoIndexado<Genero> arqGeneros;
@@ -19,7 +20,7 @@ public class CrudJogos
             try
             {
                 criarArquivo();
-                boolean repetir=false;
+                boolean repetir;
                 do
                 {
                     try
@@ -69,7 +70,7 @@ public class CrudJogos
         while(comando!=0);
     }
 
-    public static void criarArquivo() throws Exception
+    private static void criarArquivo() throws Exception
     {
         arqJogos = new ArquivoIndexado<>(Jogo.class.getConstructor(), "jogos.db");//Arquivo dos jogos
         arqGeneros = new ArquivoIndexado<>(Genero.class.getConstructor(), "generos.db");//Arquivo dos generos dos jogos
@@ -80,7 +81,7 @@ public class CrudJogos
         idxPlataformaparaJdp = new ArvoreBMais(5,"plataformaparajdp.idx");//Indice de plataforma para Jogos da Plataforma
     }
 
-    public static void exibirMenu()
+    private static void exibirMenu()
     {
         MyIO.println("\n\n------------------------------------------------");
         MyIO.println("                    MENU");
@@ -100,25 +101,23 @@ public class CrudJogos
         MyIO.print("\nOpcao: ");
     }
 
-    public static void menuListarJogo() throws Exception
+    private static void menuListarJogo() throws Exception
     {
         Object[] jogos=arqJogos.listar();
-        for(int i=0;i<jogos.length;i++)
-        {
-            Jogo jogo=(Jogo)jogos[i];
+        for (Object o : jogos) {
+            Jogo jogo = (Jogo) o;
             MyIO.println(jogo.toString());
-            Genero genero=(Genero)arqGeneros.buscar(jogo.getIdGenero());
-            MyIO.println("Genero: "+genero.getTipo());
-            int idsDosJogosDasPlataformas[]=idxJogoparaJdp.lista(jogo.getID());
-            for(int j=0;j<idsDosJogosDasPlataformas.length;j++)
-            {
-                JogosDaPlataforma jogosDaPlataforma=(JogosDaPlataforma)arqJogosDaPlataforma.buscar(idsDosJogosDasPlataformas[j]);
+            Genero genero = (Genero) arqGeneros.buscar(jogo.getIdGenero());
+            MyIO.println("Genero: " + genero.getTipo());
+            int[] idsDosJogosDasPlataformas = idxJogoparaJdp.lista(jogo.getID());
+            for (int idsDosJogosDasPlataforma : idsDosJogosDasPlataformas) {
+                JogosDaPlataforma jogosDaPlataforma = (JogosDaPlataforma) arqJogosDaPlataforma.buscar(idsDosJogosDasPlataforma);
                 menuBuscarPlataforma(jogosDaPlataforma.getIdPlataforma());
             }
         }
     }
 
-    public static void menuBuscarPlataforma(int id) throws Exception
+    private static void menuBuscarPlataforma(int id) throws Exception
     {
         if(id>0)
         {
@@ -126,19 +125,19 @@ public class CrudJogos
             if(plataforma!=null)
                 MyIO.println("Plataforma: "+plataforma.getNome());
             else
-                MyIO.println("Plataforma não encontrada");
+                MyIO.println("Plataforma nao encontrada");
         }
     }
 
-    public static Plataforma buscarPlataforma(int id) throws Exception
+    private static Plataforma buscarPlataforma(int id) throws Exception
     {
         return (Plataforma)arqPlataformas.buscar(id);
     }
 
-    public static void menuBuscarJogo() throws Exception
+    private static void menuBuscarJogo() throws Exception
     {
         MyIO.println("\nBUSCA");
-        boolean repetir=false;
+        boolean repetir;
         int id=-1;
         do
         {
@@ -163,10 +162,9 @@ public class CrudJogos
             MyIO.println(jogo.toString());
             Genero genero=(Genero)arqGeneros.buscar(jogo.getIdGenero());
             MyIO.println("Genero: "+genero.getTipo());
-            int idsDosJogosDaPlataforma[]=idxJogoparaJdp.lista(jogo.getID());
-            for(int i=0;i<idsDosJogosDaPlataforma.length;i++)
-            {
-                JogosDaPlataforma jogosDaPlataforma=(JogosDaPlataforma)arqJogosDaPlataforma.buscar(idsDosJogosDaPlataforma[i]);
+            int[] idsDosJogosDaPlataforma =idxJogoparaJdp.lista(jogo.getID());
+            for (int value : idsDosJogosDaPlataforma) {
+                JogosDaPlataforma jogosDaPlataforma = (JogosDaPlataforma) arqJogosDaPlataforma.buscar(value);
                 menuBuscarPlataforma(jogosDaPlataforma.getIdPlataforma());
             }
         }
@@ -181,21 +179,21 @@ public class CrudJogos
         return resp;
     }
 
-    public static Jogo getJogo(int id) throws Exception
+    private static Jogo getJogo(int id) throws Exception
     {
         return (Jogo)arqJogos.buscar(id);
     }
 
-    public static void menuIncluirJogo() throws Exception
+    private static void menuIncluirJogo() throws Exception
     {
-        String titulo="";
+        String titulo;
         byte score=-1;
-        String genero="";
+        String genero;
 
-        MyIO.println("\nINCLUSÃO");
-        titulo=MyIO.readLine("Título: ");
+        MyIO.println("\nINCLUSAO");
+        titulo=MyIO.readLine("Titulo: ");
 
-        boolean repetir=false;
+        boolean repetir;
         do
         {
             try
@@ -221,7 +219,7 @@ public class CrudJogos
         do
         {
             plataformas.add(MyIO.readLine("Plataforma: "));
-            boolean repetir1=false;
+            boolean repetir1;
             do
             {
                 try
@@ -244,54 +242,49 @@ public class CrudJogos
         inserirJogo(titulo, score, genero, plataformas);
     }
 
-    public static void inserirJogo(String titulo, byte score, String nomeDoGenero, ArrayList<String> nomeDaPlataforma) throws  Exception
+    private static void inserirJogo(String titulo, byte score, String nomeDoGenero, ArrayList<String> nomeDaPlataforma) throws  Exception
     {
         Genero genero=getGenero(nomeDoGenero);
         if(genero==null)
         {
-            CrudGenero.incluirGenero(nomeDoGenero);
+            inserirGenero(nomeDoGenero);
             genero = getGenero(nomeDoGenero);
         }
         int idGenero=genero.getID();
 
         ArrayList<Integer> idPlataformas=new ArrayList<>();
 
-        for(int i=0;i<nomeDaPlataforma.size();i++)
-        {
-            Plataforma plataforma=getPlataforma(nomeDaPlataforma.get(i));
-            if(plataforma==null)
-                CrudPlataforma.incluirPlataforma(nomeDaPlataforma.get(i));
-            idPlataformas.add(getPlataforma(nomeDaPlataforma.get(i)).getID());
+        for (String s : nomeDaPlataforma) {
+            Plataforma plataforma = getPlataforma(s);
+            if (plataforma == null)
+                inserirPlataforma(s);
+            idPlataformas.add(getPlataforma(s).getID());
         }
 
         Jogo jogo=new Jogo(-1, idGenero, titulo, score);
         int idJogo=arqJogos.incluir(jogo);
         idxJogoporGenero.inserir(idGenero, idJogo);
-        for(int i=0;i<idPlataformas.size();i++)
-        {
-            JogosDaPlataforma jogosDaPlataforma=new JogosDaPlataforma(-1, idPlataformas.get(i), idJogo);
-            int idJogosDaPlataforma=arqJogosDaPlataforma.incluir(jogosDaPlataforma);
+        for (Integer idPlataforma : idPlataformas) {
+            JogosDaPlataforma jogosDaPlataforma = new JogosDaPlataforma(-1, idPlataforma, idJogo);
+            int idJogosDaPlataforma = arqJogosDaPlataforma.incluir(jogosDaPlataforma);
             idxJogoparaJdp.inserir(idJogo, idJogosDaPlataforma);
-            idxPlataformaparaJdp.inserir(idPlataformas.get(i), idJogosDaPlataforma);
+            idxPlataformaparaJdp.inserir(idPlataforma, idJogosDaPlataforma);
         }
     }
 
-    public static void inserirJogo(String titulo, byte score, String nomeDoGenero, String ... nomeDaPlataforma) throws Exception
+    private static void inserirJogo(String titulo, byte score, String nomeDoGenero, String... nomeDaPlataforma) throws Exception
     {
-        ArrayList<String> plataforma=new ArrayList<>();
-        for(int i=0;i<nomeDaPlataforma.length;i++)
-            plataforma.add(nomeDaPlataforma[i]);
+        ArrayList<String> plataforma = new ArrayList<>(Arrays.asList(nomeDaPlataforma));
         inserirJogo(titulo, score, nomeDoGenero, plataforma);
     }
 
-    public static Genero getGenero(String nomeDoGenero) throws Exception
+    private static Genero getGenero(String nomeDoGenero) throws Exception
     {
         Genero resp=null;
         ArrayList<Genero> genero=new ArrayList<>();
-        Object objeto[]=arqGeneros.listar();
-        for(int i=0;i<objeto.length;i++)
-        {
-            Genero tmp=(Genero)objeto[i];
+        Object[] objeto =arqGeneros.listar();
+        for (Object o : objeto) {
+            Genero tmp = (Genero) o;
             genero.add(tmp);
         }
 
@@ -319,15 +312,14 @@ public class CrudJogos
         return ehNumero;
     }//fim do metodo ehNumero
 
-    public static Plataforma getPlataforma(String nomeDaPlataforma) throws Exception
+    private static Plataforma getPlataforma(String nomeDaPlataforma) throws Exception
     {
 
         Plataforma resp=null;
         ArrayList<Plataforma> plataforma=new ArrayList<>();
-        Object objeto[]=arqPlataformas.listar();
-        for(int i=0;i<objeto.length;i++)
-        {
-            Plataforma tmp=(Plataforma)objeto[i];
+        Object[] objeto =arqPlataformas.listar();
+        for (Object o : objeto) {
+            Plataforma tmp = (Plataforma) o;
             plataforma.add(tmp);
         }
         int i=0;
@@ -346,12 +338,12 @@ public class CrudJogos
         return resp;
     }
 
-    public static void menuExcluirJogo() throws Exception
+    private static void menuExcluirJogo() throws Exception
     {
-        MyIO.println("\nEXCLUSÃO");
+        MyIO.println("\nEXCLUSAO");
 
         int id=0;
-        boolean repetir=false;
+        boolean repetir;
         do
         {
             try
@@ -379,7 +371,7 @@ public class CrudJogos
             {
                 try
                 {
-                    confirmacao=MyIO.readLine("\nConfirma exclusão? ").toLowerCase().charAt(0);
+                    confirmacao=MyIO.readLine("\nConfirma exclusao? ").toLowerCase().charAt(0);
                     if(confirmacao!='s' && confirmacao!='n')
                         throw new InputMismatchException("Entrada Invalida!");
                     repetir1=false;
@@ -397,7 +389,7 @@ public class CrudJogos
         }
     }
 
-    public static boolean excliurJogo(int id) throws Exception
+    private static void excliurJogo(int id) throws Exception
     {
         Jogo jogo=(Jogo)arqJogos.buscar(id);
         boolean resp=false;
@@ -405,23 +397,21 @@ public class CrudJogos
         {
             idxJogoporGenero.excluir(jogo.getIdGenero(),id);
             int[] idsjdp = idxJogoparaJdp.lista(jogo.getID());
-            for(int i = 0;i<idsjdp.length;i++)
-            {
-                idxJogoparaJdp.excluir(idsjdp[i],jogo.getID());
-                JogosDaPlataforma jdp = (JogosDaPlataforma)arqJogosDaPlataforma.buscar(idsjdp[i]);
-                idxPlataformaparaJdp.excluir(idsjdp[i],jdp.getIdPlataforma());
-                arqJogosDaPlataforma.excluir(idsjdp[i]);
+            for (int value : idsjdp) {
+                idxJogoparaJdp.excluir(value, jogo.getID());
+                JogosDaPlataforma jdp = (JogosDaPlataforma) arqJogosDaPlataforma.buscar(value);
+                idxPlataformaparaJdp.excluir(value, jdp.getIdPlataforma());
+                arqJogosDaPlataforma.excluir(value);
             }
             resp=true;
         }
-        return resp;
     }
 
-    public static void menuListarJogosPorPlataforma() throws Exception
+    private static void menuListarJogosPorPlataforma() throws Exception
     {
         menuListarPlataformas();
         int idplataforma=-1;
-        boolean repetir=false;
+        boolean repetir;
         do
         {
             try
@@ -440,41 +430,39 @@ public class CrudJogos
         while(repetir);
         int[] idsDosJdp = idxPlataformaparaJdp.lista(idplataforma);
         MyIO.println(idsDosJdp.length);
-        for(int i=0;i<idsDosJdp.length;i++)
-        {
-            JogosDaPlataforma jogosDaPlataforma = (JogosDaPlataforma)arqJogosDaPlataforma.buscar(idsDosJdp[i]);
+        for (int value : idsDosJdp) {
+            JogosDaPlataforma jogosDaPlataforma = (JogosDaPlataforma) arqJogosDaPlataforma.buscar(value);
             Jogo jogo = (Jogo) arqJogos.buscar(jogosDaPlataforma.getIdJogo());
             MyIO.println(jogo.toString());
         }
     }
 
-    public static void menuListarPlataformas() throws Exception
+    private static void menuListarPlataformas() throws Exception
     {
         if(arqPlataformas==null)
             MyIO.println("Nenhuma plataforma registrada");
         else
         {
-            Object plataformas[]=arqPlataformas.listar();
+            Object[] plataformas =arqPlataformas.listar();
             if(plataformas.length==0)
                 MyIO.println("Nenhuma plataforma registrada");
             else
             {
-                for(int i=0;i<plataformas.length;i++)
-                {
-                    Plataforma plataforma=(Plataforma)plataformas[i];
-                    MyIO.println(plataforma.getID()+" "+plataforma.getNome()+" ");
+                for (Object o : plataformas) {
+                    Plataforma plataforma = (Plataforma) o;
+                    MyIO.println(plataforma.getID() + " " + plataforma.getNome() + " ");
                 }
                 MyIO.println();
             }
         }
     }
 
-    public static void menuListarJogosPorGenero() throws Exception
+    private static void menuListarJogosPorGenero() throws Exception
     {
         MyIO.println("Dentre os generos listados abaixo digite o id do genero desejado");
         menuListarGenero();
         int idGenero=-1;
-        boolean repetir=false;
+        boolean repetir;
         do
         {
             try
@@ -499,41 +487,39 @@ public class CrudJogos
             MyIO.println("Jogos: -------------");
 
             int[] idsDosJogos = idxJogoporGenero.lista(idGenero);
-            for(int i=0;i<idsDosJogos.length;i++)
-            {
-                Jogo jogo = (Jogo)arqJogos.buscar(idsDosJogos[i]);
+            for (int idsDosJogo : idsDosJogos) {
+                Jogo jogo = (Jogo) arqJogos.buscar(idsDosJogo);
                 MyIO.println(jogo.toString());
             }
         }
         else
-            MyIO.println("Genero não encontrado");
+            MyIO.println("Genero nao encontrado");
         MyIO.pause();
     }
 
-    public static void menuListarGenero() throws Exception
+    private static void menuListarGenero() throws Exception
     {
         if(arqGeneros==null)
             MyIO.println("Nenhum genero registrado");
         else
         {
-            Object generos[]=arqGeneros.listar();
+            Object[] generos =arqGeneros.listar();
             if(generos.length==0)
                 MyIO.println("Nenhum genero registrado");
             else
             {
-                for(int i=0; i<generos.length; i++)
-                {
-                    Genero genero = (Genero)generos[i];
-                    MyIO.print(genero.getID()+" "+genero.getTipo()+" ");
+                for (Object o : generos) {
+                    Genero genero = (Genero) o;
+                    MyIO.print(genero.getID() + " " + genero.getTipo() + " ");
                 }
                 MyIO.println();
             }
         }
     }
 
-    public static void menuInserirGeneroDeJogo() throws Exception
+    private static void menuInserirGeneroDeJogo() throws Exception
     {
-        MyIO.println("\nINCLUSÃO");
+        MyIO.println("\nINCLUSAO");
         String tipo=MyIO.readLine("Tipo: ");
         char confirmacao=' ';
         boolean repetir;
@@ -541,7 +527,7 @@ public class CrudJogos
         {
             try
             {
-                confirmacao=MyIO.readLine("\nConfirma inclusão? ").toLowerCase().charAt(0);
+                confirmacao=MyIO.readLine("\nConfirma inclusao? ").toLowerCase().charAt(0);
                 if(confirmacao!='s' && confirmacao!='n')
                     throw new InputMismatchException("Entrada Invalida!");
                 repetir=false;
@@ -558,21 +544,29 @@ public class CrudJogos
             MyIO.println("Genero incluido com ID: "+inserirGenero(tipo));
     }
 
-    public static int inserirGenero(String nomeDoGenero) throws Exception
+    private static int inserirGenero(String nomeDoGenero) throws Exception
     {
-        Genero genero=new Genero(-1, nomeDoGenero);
-        return arqGeneros.incluir(genero);
+        int resp=-1;
+        if(getGenero(nomeDoGenero)==null)
+        {
+            Genero genero=new Genero(-1, nomeDoGenero);
+            resp=arqGeneros.incluir(genero);
+        }
+        else
+            resp=getGenero(nomeDoGenero).getID();
+
+        return resp;
     }
 
-    public static void menuListarPlataformasDisponiveis() throws Exception
+    private static void menuListarPlataformasDisponiveis() throws Exception
     {
         MyIO.println("Plataformas disponiveis");
         menuListarPlataformas();
     }
 
-    public static void menuInserirPlataforma() throws Exception
+    private static void menuInserirPlataforma() throws Exception
     {
-        MyIO.println("\nINCLUSÃO");
+        MyIO.println("\nINCLUSAO");
         String nome=MyIO.readLine("Nome: ");
         char confirmacao=' ';
         boolean repetir;
@@ -580,7 +574,7 @@ public class CrudJogos
         {
             try
             {
-                confirmacao=MyIO.readLine("\nConfirma inclusão? ").toLowerCase().charAt(0);
+                confirmacao=MyIO.readLine("\nConfirma inclusao? ").toLowerCase().charAt(0);
                 if(confirmacao!='s' && confirmacao!='n')
                     throw new InputMismatchException("Entrada Invalida!");
                 repetir=false;
@@ -594,17 +588,25 @@ public class CrudJogos
         while(repetir);
 
         if(confirmacao=='s')
-            MyIO.println("Plataforma incluída com ID: "+inserirPlataforma(nome));
+            MyIO.println("Plataforma incluida com ID: "+inserirPlataforma(nome));
 
     }
 
-    public static int inserirPlataforma(String nomeDaPlataforma) throws Exception
+    private static int inserirPlataforma(String nomeDaPlataforma) throws Exception
     {
-        Plataforma plataforma=new Plataforma(-1, nomeDaPlataforma);
-        return arqPlataformas.incluir(plataforma);
+        int resp=-1;
+        if(getPlataforma(nomeDaPlataforma)==null)
+        {
+            Plataforma plataforma=new Plataforma(-1, nomeDaPlataforma);
+            resp=arqPlataformas.incluir(plataforma);
+        }
+        else
+            resp=getPlataforma(nomeDaPlataforma).getID();
+
+        return resp;
     }
 
-    public static void povoarBancoDeDados() throws Exception
+    private static void povoarBancoDeDados() throws Exception
     {
         //Plataformas
         /*
@@ -640,14 +642,13 @@ public class CrudJogos
         inserirGenero("RPG");
         */
         //Jogos
-        inserirJogo("Counter Strike: Global Offensive", (byte)83, "Windows", "Mac OS", "Linux", "Xbox", "Xbox 360");
+        inserirJogo("Counter Strike: Global Offensive", (byte)83,"FPS" ,"Windows", "Mac OS", "Linux", "Xbox", "Xbox 360");
         inserirJogo("World of Warcraft", (byte)93, "MOBA","Windows", "Mac OS");
         inserirJogo("WatchDogs 2", (byte)82, "Acao", "Windows", "PlayStation 4", "Xbox One");
         inserirJogo("Assassin's Creed Unity", (byte)70, "Acao", "Windows", "PlayStation 4", "Xbox One");
-        /*
-        inserirJogo("Assassin's Creed III", (byte)72, "Acao", "Windows", "PlayStation 3", "PlayStation 4", "Xbox 360", "Xbox One", "WiiU");
-        inserirJogo("Overwatch", (byte)91, "FPS", "Windows", "PlayStation 4", "Xbox One", "Nintendo Switch");
-        inserirJogo("Assassin's Creed Rougue", (byte)74, "Acao", "PlayStation 3", "Xbox 360", "Windows", "PlayStation 4", "Xbox One", "Nintendo Switch");
+        //inserirJogo("Assassin's Creed III", (byte)72, "Acao", "Windows", "PlayStation 3", "PlayStation 4", "Xbox 360", "Xbox One", "WiiU");
+        //inserirJogo("Overwatch", (byte)91, "FPS", "Windows", "PlayStation 4", "Xbox One", "Nintendo Switch");
+        /*inserirJogo("Assassin's Creed Rougue", (byte)74, "Acao", "PlayStation 3", "Xbox 360", "Windows", "PlayStation 4", "Xbox One", "Nintendo Switch");
         inserirJogo("Battlefield 1", (byte)88, "FPS", "Windows", "PlayStation 4", "Xbox One");
         inserirJogo("FarCry 4", (byte)85, "FPS", "Windows", "PlayStation 4", "PlayStation 3", "Xbox 360", "Xbox One");
         inserirJogo("Need for Speed Rivals", (byte)80, "Corrida", "Windows", "PlayStation 3", "PlayStation 4", "Xbox 360", "Xbox One");

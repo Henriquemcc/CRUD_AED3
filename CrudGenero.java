@@ -1,9 +1,7 @@
-
 import java.text.DecimalFormat;
 import java.util.InputMismatchException;
-import java.util.Scanner;
 
-public class CrudGenero
+class CrudGenero
 {
     private static ArquivoIndexado<Genero> arqGeneros;
     private static DecimalFormat df;
@@ -16,7 +14,7 @@ public class CrudGenero
             try
             {
                 criaArquivo();
-                boolean repetir=false;
+                boolean repetir;
                 do
                 {
                     try
@@ -57,12 +55,12 @@ public class CrudGenero
         while(comando!=0);
     }
 
-    public static void criaArquivo() throws Exception
+    private static void criaArquivo() throws Exception
     {
         arqGeneros = new ArquivoIndexado<>(Genero.class.getConstructor(), "generos.db");
     }
 
-    public static void exibirMenu()
+    private static void exibirMenu()
     {
         MyIO.println("\n\n------------------------------------------------");
         MyIO.println("                    MENU");
@@ -76,18 +74,17 @@ public class CrudGenero
         MyIO.print("\nOpcao: ");
     }
 
-    public static void menuListarGenero() throws Exception
+    private static void menuListarGenero() throws Exception
     {
         criaArquivo();
         if(arqGeneros!=null)
         {
-            Object generos[]=arqGeneros.listar();
+            Object[] generos =arqGeneros.listar();
             if(generos.length!=0)
             {
-                for(int i=0;i<generos.length;i++)
-                {
-                    Genero g=(Genero)generos[i];
-                    MyIO.print(g.getID()+" "+g.getTipo()+" ");
+                for (Object genero : generos) {
+                    Genero g = (Genero) genero;
+                    MyIO.print(g.getID() + " " + g.getTipo() + " ");
                 }
                 MyIO.println();
             }
@@ -104,24 +101,23 @@ public class CrudGenero
         criaArquivo();
         if(arqGeneros!=null)
         {
-            Object generos[] = arqGeneros.listar();
+            Object[] generos = arqGeneros.listar();
             if (generos.length != 0)
             {
-                for (int i = 0; i < generos.length; i++)
-                {
-                    Genero g = (Genero) generos[i];
-                    resp=g.getID() + " " + g.getTipo() + " ";
+                for (Object genero : generos) {
+                    Genero g = (Genero) genero;
+                    resp = g.getID() + " " + g.getTipo() + " ";
                 }
             }
         }
         return resp;
     }
 
-    public static void menuBuscarGenero() throws Exception
+    private static void menuBuscarGenero() throws Exception
     {
         MyIO.println("\nBUSCA");
         int id=0;
-        boolean repetir=false;
+        boolean repetir;
         do
         {
             try
@@ -145,29 +141,29 @@ public class CrudGenero
             MyIO.println("Genero nao encontrado");
     }
 
-    public static void menuIncluirGenero() throws Exception
+    private static void menuIncluirGenero() throws Exception
     {
-        MyIO.println("\nINCLUSÃO");
+        MyIO.println("\nINCLUSAO");
         String tipo=MyIO.readLine("Tipo: ");
-        char confirmacao=MyIO.readLine("\nConfirma inclusão? ").toLowerCase().charAt(0);
+        char confirmacao=MyIO.readLine("\nConfirma inclusao? ").toLowerCase().charAt(0);
         if(confirmacao=='s')
             incluirGenero(tipo);
 
     }
 
-    public static int incluirGenero(String tipo) throws Exception
+    private static void incluirGenero(String tipo) throws Exception
     {
         Genero genero=new Genero(-1, tipo);
         if(arqGeneros==null)
             criaArquivo();
-        return arqGeneros.incluir(genero);
+        arqGeneros.incluir(genero);
     }
 
-    public static void menuExcluirGenero() throws Exception
+    private static void menuExcluirGenero() throws Exception
     {
-        MyIO.println("\nEXCLUSÃO");
+        MyIO.println("\nEXCLUSAO");
         int id=0;
-        boolean repetir=false;
+        boolean repetir;
         do
         {
             try
@@ -189,13 +185,13 @@ public class CrudGenero
         if(genero!=null)
         {
             MyIO.println(genero.toString());
-            boolean repetir1=false;
+            boolean repetir1;
             char confirmacao=' ';
             do
             {
                 try
                 {
-                    confirmacao=MyIO.readLine("\nConfirma exclusão? ").toLowerCase().charAt(0);
+                    confirmacao=MyIO.readLine("\nConfirma exclusao? ").toLowerCase().charAt(0);
                     if(confirmacao!='s' && confirmacao!='n')
                         throw new InputMismatchException("Entrada Invalida!");
                     repetir1=false;
@@ -214,12 +210,12 @@ public class CrudGenero
 
     }
 
-    public static void excluirGenero(int id) throws Exception
+    private static void excluirGenero(int id) throws Exception
     {
         arqGeneros.excluir(id);
     }
 
-    public static void menuPovoar() throws Exception
+    private static void menuPovoar() throws Exception
     {
         incluirGenero("FPS");
         incluirGenero("RPG");

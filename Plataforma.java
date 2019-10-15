@@ -1,6 +1,4 @@
-
 import java.io.*;
-import java.text.DecimalFormat;
 
 public class Plataforma implements Registro
 {

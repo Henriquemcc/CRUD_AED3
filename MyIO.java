@@ -1,12 +1,12 @@
-
 import java.io.*;
 import java.nio.charset.*;
 import java.util.InputMismatchException;
+import java.util.Objects;
 
 class MyIO 
 {
 
-   private static BufferedReader in = new BufferedReader(new InputStreamReader(System.in, Charset.forName("ISO-8859-1")));
+   private static BufferedReader in = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.ISO_8859_1));
    private static String charset = "ISO-8859-1";
 
    public static void setCharset(String charset_)
@@ -271,7 +271,7 @@ class MyIO
       }
    }
 
-   public static double readDouble()
+   private static double readDouble()
    {
       boolean repetir=false;
       double d = -1;
@@ -297,7 +297,7 @@ class MyIO
       return d;
    }
 
-   public static double readDouble(String str)
+   private static double readDouble(String str)
    {
       try
       {
@@ -350,7 +350,7 @@ class MyIO
       return i;
    }
 
-   public static byte readByte()
+   private static byte readByte()
    {
       boolean repetir=false;
       byte i=-1;
@@ -376,7 +376,7 @@ class MyIO
       return i;
    }
 
-   public static short readShort()
+   private static short readShort()
    {
       boolean repetir=false;
       short i=-1;
@@ -444,9 +444,9 @@ class MyIO
       return readShort();
    }
 
-   public static String readString()
+   private static String readString()
    {
-      String s = "";
+      StringBuilder s = new StringBuilder();
       char tmp;
       try
       {
@@ -455,7 +455,7 @@ class MyIO
             tmp = (char)in.read();
             if(tmp != '\n' && tmp != ' ' && tmp != 13)
             {
-               s += tmp;
+               s.append(tmp);
             }
          }
          while(tmp != '\n' && tmp != ' ');
@@ -464,7 +464,7 @@ class MyIO
       {
          System.out.println("lerPalavra: " + ioe);
       }
-      return s;
+      return s.toString();
    }
 
    public static String readString(String str)
@@ -481,9 +481,9 @@ class MyIO
       return readString();
    }
 
-   public static String readLine()
+   private static String readLine()
    {
-      String s = "";
+      StringBuilder s = new StringBuilder();
       char tmp;
       try
       {
@@ -492,7 +492,7 @@ class MyIO
             tmp = (char)in.read();
             if(tmp != '\n' && tmp != 13)
             {
-               s += tmp;
+               s.append(tmp);
             }
          }
          while(tmp != '\n');
@@ -501,7 +501,7 @@ class MyIO
       {
          System.out.println("lerPalavra: " + ioe);
       }
-      return s;
+      return s.toString();
    }
 
    public static String readLine(String str)
@@ -518,7 +518,7 @@ class MyIO
       return readLine();
    }
 
-   public static char readChar()
+   private static char readChar()
    {
       boolean repetir=false;
       char resp = ' ';
@@ -560,7 +560,7 @@ class MyIO
       return readChar();
    }
 
-   public static boolean readBoolean()
+   private static boolean readBoolean()
    {
       boolean resp = false;
       boolean repetir=false;
@@ -571,7 +571,7 @@ class MyIO
          try
          {
             str = readString().toLowerCase();
-            if(str!="true" && str!="false" && str!="t" && str!="f" && str!="1" && str!="0" && str!="verdadeiro" && str!="falso")
+            if(!Objects.equals(str, "true") && !Objects.equals(str, "false") && !Objects.equals(str, "t") && !Objects.equals(str, "f") && !Objects.equals(str, "1") && !Objects.equals(str, "0") && !Objects.equals(str, "verdadeiro") && !Objects.equals(str, "falso"))
                throw new InputMismatchException("O valor digitado nao eh booleano!");
             repetir=false;
          }

@@ -1,9 +1,7 @@
-
 import java.text.DecimalFormat;
 import java.util.InputMismatchException;
-import java.util.Scanner;
 
-public class CrudPlataforma
+class CrudPlataforma
 {
     private static ArquivoIndexado<Plataforma> arqPlataformas;
     private static DecimalFormat df;
@@ -16,7 +14,7 @@ public class CrudPlataforma
             try
             {
                 criaArquivo();
-                boolean repetir=false;
+                boolean repetir;
                 do
                 {
                     try
@@ -54,12 +52,12 @@ public class CrudPlataforma
         while(comando!=0);
     }
 
-    public static void criaArquivo()throws Exception
+    private static void criaArquivo()throws Exception
     {
         arqPlataformas = new ArquivoIndexado<>(Plataforma.class.getConstructor(), "plataformas.db");
     }
 
-    public static void exibirMenu()
+    private static void exibirMenu()
     {
         MyIO.println("\n\n------------------------------------------------");
         MyIO.println("                    MENU");
@@ -73,18 +71,17 @@ public class CrudPlataforma
         MyIO.print("\nOpcao: ");
     }
 
-    public static void menuListarPlataformas() throws Exception
+    private static void menuListarPlataformas() throws Exception
     {
         criaArquivo();
         if(arqPlataformas!=null)
         {
-            Object plataformas[]=arqPlataformas.listar();
+            Object[] plataformas =arqPlataformas.listar();
             if(plataformas.length>0)
             {
-                for(int i=0;i<plataformas.length;i++)
-                {
-                    Plataforma plataforma=(Plataforma)plataformas[i];
-                    MyIO.print(plataforma.getID()+" "+plataforma.getNome()+" ");
+                for (Object o : plataformas) {
+                    Plataforma plataforma = (Plataforma) o;
+                    MyIO.print(plataforma.getID() + " " + plataforma.getNome() + " ");
                 }
                 MyIO.println();
             }
@@ -101,24 +98,23 @@ public class CrudPlataforma
         criaArquivo();
         if(arqPlataformas!=null)
         {
-            Object plataformas[]=arqPlataformas.listar();
+            Object[] plataformas =arqPlataformas.listar();
             if(plataformas.length!=0)
             {
-                for(int i=0;i<plataformas.length;i++)
-                {
-                    Plataforma p=(Plataforma)plataformas[i];
-                    resp=p.getID()+" "+p.getNome()+" ";
+                for (Object plataforma : plataformas) {
+                    Plataforma p = (Plataforma) plataforma;
+                    resp = p.getID() + " " + p.getNome() + " ";
                 }
             }
         }
         return resp;
     }
 
-    public static void menuBuscarPlataformas() throws Exception
+    private static void menuBuscarPlataformas() throws Exception
     {
         MyIO.println("\nBUSCA");
         int id=0;
-        boolean repetir=false;
+        boolean repetir;
         do
         {
             try
@@ -142,17 +138,17 @@ public class CrudPlataforma
             MyIO.println("Plataforma nao encontrada");
     }
 
-    public static void menuIncluirPlataformas() throws Exception
+    private static void menuIncluirPlataformas() throws Exception
     {
-        MyIO.println("\nINCLUSÃO");
+        MyIO.println("\nINCLUSAO");
         String nome=MyIO.readLine("Nome: ");
-        char confirmacao=' ';
-        boolean repetir=false;
+        char confirmacao;
+        boolean repetir;
         do
         {
             try
             {
-                confirmacao=MyIO.readLine("\nConfirma inclusão? ").toLowerCase().charAt(0);
+                confirmacao=MyIO.readLine("\nConfirma inclusao? ").toLowerCase().charAt(0);
                 if(confirmacao!='s' && confirmacao!='n')
                     throw new InputMismatchException("Entrada Invalida!");
                 repetir=false;
@@ -165,10 +161,10 @@ public class CrudPlataforma
         }
         while(repetir);
 
-        MyIO.println("Plataforma incluída com ID: "+incluirPlataforma(nome));
+        MyIO.println("Plataforma incluida com ID: "+incluirPlataforma(nome));
     }
 
-    public static int incluirPlataforma(String nome) throws Exception
+    private static int incluirPlataforma(String nome) throws Exception
     {
         if(arqPlataformas==null)
             criaArquivo();
@@ -178,12 +174,12 @@ public class CrudPlataforma
         return arqPlataformas.incluir(plataforma);
     }
 
-    public static void menuExcluirPlataformas() throws Exception
+    private static void menuExcluirPlataformas() throws Exception
     {
         criaArquivo();
-        MyIO.println("\nEXCLUSÃO");
+        MyIO.println("\nEXCLUSAO");
         int id=0;
-        boolean repetir=false;
+        boolean repetir;
         do
         {
             try
@@ -211,7 +207,7 @@ public class CrudPlataforma
             {
                 try
                 {
-                    confirmacao=MyIO.readLine("\nConfirma exclusão? ").toLowerCase().charAt(0);
+                    confirmacao=MyIO.readLine("\nConfirma exclusao? ").toLowerCase().charAt(0);
                     if(confirmacao!='s' && confirmacao!='n')
                         throw new InputMismatchException("Entrada Invalida!");
                     repetir1=false;
@@ -229,12 +225,12 @@ public class CrudPlataforma
         }
     }
 
-    public static void excluirPlataforma(int id) throws Exception
+    private static void excluirPlataforma(int id) throws Exception
     {
         arqPlataformas.excluir(id);
     }
 
-    public static void menuPovoarBancoDeDados() throws Exception
+    private static void menuPovoarBancoDeDados() throws Exception
     {
         incluirPlataforma("PlayStation 1");
         incluirPlataforma("PlayStation 2");
@@ -262,6 +258,6 @@ public class CrudPlataforma
         if( (l = (Plataforma)arqPlataformas.buscar(id))!=null )
             MyIO.println("Plataforma: "+l.getNome());
         else
-            MyIO.println("Plataforma não encontrada");
+            MyIO.println("Plataforma nao encontrada");
     }
 }

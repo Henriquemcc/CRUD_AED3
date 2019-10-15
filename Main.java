@@ -1,5 +1,4 @@
-
-public class Main {
+class Main {
 
     public static void main(String[] args)
     {
@@ -7,7 +6,7 @@ public class Main {
         int comando=0;
         do
         {
-            boolean erroDigitacaoComando=false;
+            boolean erroDigitacaoComando;
             do
             {
                 MyIO.println("Digite o CRUD que deseja executar:");
@@ -19,7 +18,7 @@ public class Main {
                 {
                     comando=MyIO.readInt();
                     if(comando<0 || comando>3)
-                        throw new Exception("Comando inválido!");
+                        throw new Exception("Comando invalido!");
 
                     erroDigitacaoComando=false;
                 }

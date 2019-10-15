@@ -1,4 +1,3 @@
-
 import java.io.*;
 
 public class Genero implements Registro
@@ -38,9 +37,9 @@ public class Genero implements Registro
         this.idgenero=n;
     }
 
-    public void setTipo(String tipo)
+    private void setTipo(String tipo)
     {
-        this.tipo=tipo.toUpperCase();;
+        this.tipo=tipo.toUpperCase();
     }
     public String toString()
     {

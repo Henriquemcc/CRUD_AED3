@@ -1,4 +1,3 @@
-
 import java.io.*;
 
 public class Jogo implements Registro
@@ -29,17 +28,17 @@ public class Jogo implements Registro
         this.id=id;
     }
 
-    public void setIdGenero(int idGenero)
+    private void setIdGenero(int idGenero)
     {
         this.idGenero=idGenero;
     }
 
-    public void setTitulo(String titulo)
+    private void setTitulo(String titulo)
     {
         this.titulo=titulo.toUpperCase();
     }
 
-    public void setScore(byte score)
+    private void setScore(byte score)
     {
         this.score=score;
     }

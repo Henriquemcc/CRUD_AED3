@@ -1,4 +1,3 @@
-
 import java.io.*;
 import java.util.ArrayList;
 
@@ -7,16 +6,14 @@ import java.util.ArrayList;
 // 2. Reaproveitar os espaços de páginas excluídas nas novas inclusões
 // 3. Criar método de reorganização (para eliminação de espaços excluídos)
 
-public class ArvoreBMais
+class ArvoreBMais
 {
 
-    private int  ordem;                 // Número máximo de filhos que uma página pode conter
-    private int  maxElementos;          // Variável igual a ordem - 1 para facilitar a clareza do código
-    private int  maxFilhos;             // Variável igual a ordem para facilitar a clareza do código
-    private RandomAccessFile arquivo;   // Arquivo em que a árvore será armazenada
-    private String nomeArquivo;
-    
-    // Variáveis usadas nas funções recursivas (já que não é possível passar valores por referência)
+    private final int  ordem;                 // Numero maximo de filhos que uma pagina pode conter
+    private final int  maxElementos;          // Variavel igual a ordem - 1 para facilitar a clareza do codigo
+    private RandomAccessFile arquivo;   // Arquivo em que a arvore sera armazenada
+
+    // Variaveis usadas nas funcoes recursivas (já que não é possível passar valores por referência)
     private int  chave1Extra;
     private int  chave2Extra;
     private long paginaExtra;
@@ -26,22 +23,21 @@ public class ArvoreBMais
     // Esta classe representa uma página da árvore. A árvore é armazenada em disco,
     // assim, apenas poucas páginas serão necessárias para os processos de inclusão,
     // alteração, exclusão e consulta. 
-    class ArvoreBMais_Pagina
+    static class ArvoreBMais_Pagina
     {
 
-        protected int    ordem;                 // Número máximo de páginas que uma página pode conter
-        protected int    maxElementos;          // Variável igual a ordem - 1 para facilitar a clareza do código
-        protected int    maxFilhos;             // Variável igual a ordem  para facilitar a clareza do código
-        protected int    n;                     // Número de elementos presentes na página
-        protected int[]  chaves1;
-        protected int[]  chaves2;
-        protected long[] filhos;                // Vetor de ponteiros para os filhos
-        protected long   proxima;               // Próxima folha, quando a página for uma folha
-        private   int    TAMANHO_REGISTRO = 8;  // Os elementos são de tamanho fixo
-        protected int    TAMANHO_PAGINA;        // A página será de tamanho fixo, calculado a partir da ordem
+        final int    ordem;                 // Número máximo de páginas que uma página pode conter
+        final int    maxElementos;          // Variável igual a ordem - 1 para facilitar a clareza do código
+        final int    maxFilhos;             // Variável igual a ordem  para facilitar a clareza do código
+        int    n;                     // Número de elementos presentes na página
+        final int[]  chaves1;
+        final int[]  chaves2;
+        final long[] filhos;                // Vetor de ponteiros para os filhos
+        long   proxima;               // Próxima folha, quando a página for uma folha
+        final int    TAMANHO_PAGINA;        // A página será de tamanho fixo, calculado a partir da ordem
 
         // Construtor da página
-        public ArvoreBMais_Pagina(int o)
+        ArvoreBMais_Pagina(int o)
         {
 
             // Inicialização dos atributos
@@ -68,7 +64,7 @@ public class ArvoreBMais
         }
         
         // Retorna o vetor de bytes que representa a página para armazenamento em arquivo
-        protected byte[] getBytes() throws IOException
+        byte[] getBytes() throws IOException
         {
             
             // Um fluxo de bytes é usado para construção do vetor de bytes
@@ -90,6 +86,8 @@ public class ArvoreBMais
             out.writeLong(filhos[i]);
             
             // Completa o restante da página com registros vazios
+            // Os elementos são de tamanho fixo
+            int TAMANHO_REGISTRO = 8;
             byte[] registroVazio = new byte[TAMANHO_REGISTRO];
             while(i<maxElementos)
             {
@@ -105,7 +103,7 @@ public class ArvoreBMais
 
         
         // Reconstrói uma página a partir de um vetor de bytes lido no arquivo
-        public void setBytes(byte[] buffer) throws IOException
+        void setBytes(byte[] buffer) throws IOException
         {
             
             // Usa um fluxo de bytes para leitura dos atributos
@@ -137,19 +135,18 @@ public class ArvoreBMais
         // Inicializa os atributos da árvore
         ordem = o;
         maxElementos = o-1;
-        maxFilhos = o;
-        nomeArquivo = na;
-        
+        // Variável igual a ordem para facilitar a clareza do código
+
         // Abre (ou cria) o arquivo, escrevendo uma raiz vazia, se necessário.
         File d = new File("dados");
         if( !d.exists() )
             d.mkdir();
         
-        arquivo = new RandomAccessFile("dados/"+nomeArquivo,"rw");
+        arquivo = new RandomAccessFile("dados/"+ na,"rw");
         if(arquivo.length()<8) 
             arquivo.writeLong(-1);  // raiz vazia
     }
-    
+
     // Testa se a árvore está vazia. Uma árvore vazia é identificada pela raiz == -1
     public boolean vazia() throws IOException
     {
@@ -305,14 +302,14 @@ public class ArvoreBMais
     // Inclusão de novos elementos na árvore. A inclusão é recursiva. A primeira
     // função chama a segunda recursivamente, passando a raiz como referência.
     // Eventualmente, a árvore pode crescer para cima.
-    public boolean inserir(int c1, int c2) throws IOException
+    public void inserir(int c1, int c2) throws IOException
     {
 
         // Validação das chaves
         if(c1<0 || c2<0)
         {
-            System.out.println( "Chaves não podem ser negativas" );
-            return false;
+            System.out.println( "Chaves nao podem ser negativas" );
+            return;
         }
             
         // Carrega a raiz
@@ -357,8 +354,7 @@ public class ArvoreBMais
             arquivo.seek(0);
             arquivo.writeLong(raiz);
         }
-        
-        return inserido;
+
     }
     
     
@@ -515,7 +511,7 @@ public class ArvoreBMais
         // Novo registro deve ficar na página da direita
         else
         {
-            int j=0;
+            int j;
             for(j=maxElementos-meio; j>0 && (chave1Extra<np.chaves1[j-1] || (chave1Extra==np.chaves1[j-1]&&chave2Extra<np.chaves2[j-1]) ); j--)
             {
                 np.chaves1[j] = np.chaves1[j-1];
@@ -574,7 +570,7 @@ public class ArvoreBMais
     // Remoção elementos na árvore. A remoção é recursiva. A primeira
     // função chama a segunda recursivamente, passando a raiz como referência.
     // Eventualmente, a árvore pode reduzir seu tamanho, por meio da exclusão da raiz.
-    public boolean excluir(int chave1, int chave2) throws IOException
+    public void excluir(int chave1, int chave2) throws IOException
     {
                 
         // Encontra a raiz da árvore
@@ -609,8 +605,7 @@ public class ArvoreBMais
                 arquivo.writeLong(pa.filhos[0]);  
             }
         }
-         
-        return excluido;
+
     }
     
 
@@ -620,7 +615,7 @@ public class ArvoreBMais
     {
         
         // Inicialização de variáveis
-        boolean excluido=false;
+        boolean excluido;
         int diminuido;
         
         // Testa se o registro não foi encontrado na árvore, ao alcançar uma folha
@@ -920,7 +915,7 @@ public class ArvoreBMais
     
     // Imprime a árvore, usando uma chamada recursiva.
     // A função recursiva é chamada com uma página de referência (raiz)
-    public void print() throws IOException
+    private void print() throws IOException
     {
         long raiz;
         arquivo.seek(0);
@@ -969,6 +964,7 @@ public class ArvoreBMais
     }
     
     
+    @SuppressWarnings("NonAsciiCharacters")
     public static void main(String[] args)
     {
 
@@ -982,53 +978,52 @@ public class ArvoreBMais
             arvore = new ArvoreBMais(5,"dados.db");
             
             System.out.println("Arvore B+\n");
-            System.out.println("Inserção de 20,20");
+            System.out.println("Insercao de 20,20");
             arvore.inserir( 20, 20 );
             arvore.print();
-            System.out.println("Inserção de 20,21");
+            System.out.println("Insercao de 20,21");
             arvore.inserir( 20, 21 );
             arvore.print();
-            System.out.println("Inserção de 30,30");
+            System.out.println("Insercao de 30,30");
             arvore.inserir( 30, 30 );
             arvore.print();
-            System.out.println("Inserção de 20,13");
+            System.out.println("Insercao de 20,13");
             arvore.inserir( 20, 13 );
             arvore.print();
-            System.out.println("Inserção de 20,28");
+            System.out.println("Insercao de 20,28");
             arvore.inserir( 20, 28 );
             arvore.print();
             
             System.out.println("Lista de chaves2 de 20:");
             int[] lista = arvore.lista(20);
-            for(int i=0; i<lista.length; i++)
-            {
-                System.out.print(lista[i]+"  ");
+            for (int i5 : lista) {
+                System.out.print(i5 + "  ");
             }
             System.out.println("\n");
             
-            System.out.println("Inserção de 10,10");
+            System.out.println("Insercao de 10,10");
             arvore.inserir(10,10);
             arvore.print();
-            System.out.println("Inserção de 10,11");
+            System.out.println("Insercao de 10,11");
             arvore.inserir(10,11);
             arvore.print();
 
-            System.out.println("Inserção de 1,10");
+            System.out.println("Insercao de 1,10");
             arvore.inserir(1,10);
             arvore.print();
-            System.out.println("Inserção de 1,11");
+            System.out.println("Insercao de 1,11");
             arvore.inserir(1,11);
             arvore.print();
-            System.out.println("Inserção de 2,10");
+            System.out.println("Insercao de 2,10");
             arvore.inserir(2,10);
             arvore.print();
-            System.out.println("Inserção de 2,11");
+            System.out.println("Insercao de 2,11");
             arvore.inserir(2,11);
             arvore.print();
-            System.out.println("Inserção de 3,10");
+            System.out.println("Insercao de 3,10");
             arvore.inserir(3,10);
             arvore.print();
-            System.out.println("Inserção de 3,11");
+            System.out.println("Insercao de 3,11");
             arvore.inserir(3,11);
             arvore.print();
             System.out.println("Inserção de 4,10");
@@ -1063,9 +1058,8 @@ public class ArvoreBMais
 
             System.out.println("Lista de chaves2 de 20:");
             lista = arvore.lista(20);
-            for(int i=0; i<lista.length; i++)
-            {
-                System.out.print(lista[i]+" ");
+            for (int i4 : lista) {
+                System.out.print(i4 + " ");
             }
             System.out.println("\n");
 
@@ -1091,54 +1085,48 @@ public class ArvoreBMais
             int chave = 1;
             System.out.print("Lista de chaves2 de "+chave+": ");
             lista = arvore.lista(chave);
-            for(int i=0; i<lista.length; i++)
-            {
-                System.out.print(lista[i]+" ");
+            for (int i3 : lista) {
+                System.out.print(i3 + " ");
             }
             System.out.println("\n");
 
             chave = 2;
             System.out.print("Lista de chaves2 de "+chave+": ");
             lista = arvore.lista(chave);
-            for(int i=0; i<lista.length; i++)
-            {
-                System.out.print(lista[i]+" ");
+            for (int i2 : lista) {
+                System.out.print(i2 + " ");
             }
             System.out.println("\n");
 
             chave = 3;
             System.out.print("Lista de chaves2 de "+chave+": ");
             lista = arvore.lista(chave);
-            for(int i=0; i<lista.length; i++)
-            {
-                System.out.print(lista[i]+" ");
+            for (int i1 : lista) {
+                System.out.print(i1 + " ");
             }
             System.out.println("\n");
 
             chave = 4;
             System.out.print("Lista de chaves2 de "+chave+": ");
             lista = arvore.lista(chave);
-            for(int i=0; i<lista.length; i++)
-            {
-                System.out.print(lista[i]+" ");
+            for (int element : lista) {
+                System.out.print(element + " ");
             }
             System.out.println("\n");
 
             chave = 10;
             System.out.print("Lista de chaves2 de "+chave+": ");
             lista = arvore.lista(chave);
-            for(int i=0; i<lista.length; i++)
-            {
-                System.out.print(lista[i]+" ");
+            for (int item : lista) {
+                System.out.print(item + " ");
             }
             System.out.println("\n");
 
             chave = 30;
             System.out.print("Lista de chaves2 de "+chave+": ");
             lista = arvore.lista(chave);
-            for(int i=0; i<lista.length; i++)
-            {
-                System.out.print(lista[i]+" ");
+            for (int value : lista) {
+                System.out.print(value + " ");
             }
             System.out.println("\n");
 
