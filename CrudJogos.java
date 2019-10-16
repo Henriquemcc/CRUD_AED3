@@ -12,6 +12,10 @@ class CrudJogos
     private static ArvoreBMais idxJogoparaJdp;
     private static ArvoreBMais idxPlataformaparaJdp;
 
+    /**
+     * Funcao do metodo: Este metodo serve para executar o CrudJogos.
+     * @param args Parametros padrao do metodo main.
+     */
     public static void main(String[]args)
     {
         int comando=-1;
@@ -27,7 +31,7 @@ class CrudJogos
                     {
                         exibirMenu();
                         comando=MyIO.readInt();
-                        if(comando<0 || comando>12)
+                        if(comando<0 || comando>11)
                             throw new InputMismatchException("Erro: Opcao Invalida!");
                         repetir=false;
                     }
@@ -61,8 +65,6 @@ class CrudJogos
                     menuInserirPlataforma();
                 else if(comando==11)
                     povoarBancoDeDados();
-                else if(comando==12) 
-                    menuAlterarJogo();
             }
             catch(Exception e)
             {
@@ -70,13 +72,14 @@ class CrudJogos
             }
         }
         while(comando!=0);
-    }
-    /*
-        metodo que cria todos os arquivos necessários para o CRUD:
-            4 arquivos indexados: arqJogos, arqGeneros, arqJogosDaPlataforma, arqPlataformas
-            3 arvores B+ : idxJogoporGenero, idxJogoparaJdp , idxPlataformaparaJdp
+    }//fim do metodo main
 
-    */
+    /**
+     * Funcao do metodo: Este metodo serve para criar todos os arquivos necessarios para o CRUD.
+     * 4 arquivos indexados: arqJogos, arqGeneros, arqJogosDaPlataforma, arqPlataformas.
+     * 3 arvores B+ : idxJogoporGenero, idxJogoparaJdp , idxPlataformaparaJdp.
+     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
+     */
     private static void criarArquivo() throws Exception
     {
         arqJogos = new ArquivoIndexado<>(Jogo.class.getConstructor(), "jogos.db");//Arquivo dos jogos
@@ -86,11 +89,11 @@ class CrudJogos
         idxJogoporGenero= new ArvoreBMais(5,"jogoporgenero.idx");//Indice de jogos por generos
         idxJogoparaJdp = new ArvoreBMais(5,"jogoparajdp.idx");//Indice de Jogos por Jogos da Plataforma
         idxPlataformaparaJdp = new ArvoreBMais(5,"plataformaparajdp.idx");//Indice de plataforma para Jogos da Plataforma
-    }
-    /*
-        metodo que exibe o menu com todas as opções do CRUD
-    */
+    }//fim do metodo criarArquivo
 
+    /**
+     * Funcao do metodo: Este metodo serve para exibir o menu com todas as opcoes do CRUD.
+     */
     private static void exibirMenu()
     {
         MyIO.println("\n\n------------------------------------------------");
@@ -107,12 +110,13 @@ class CrudJogos
         MyIO.println("9 - Listar Plataformas disponiveis");
         MyIO.println("10 - Inserir Plataforma");
         MyIO.println("11 - Povoar BD");
-        MyIO.println("12 - Alterar jogo");
         MyIO.println("0 - Sair");
         MyIO.print("\nOpcao: ");
-    }
+    }//fim do metodo exibirMenu
+
     /**
-     * metodo que lista para o usuario todos os jogos disponiveis 
+     * Funcao do metodo: Este metodo serve para listar para o usuario todos os jogos disponiveis.
+     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
     private static void menuListarJogo() throws Exception
     {
@@ -128,12 +132,13 @@ class CrudJogos
                 menuBuscarPlataforma(jogosDaPlataforma.getIdPlataforma());
             }
         }
-    }
-    /** 
-     *  metodo que busca uma determinada plataforma. 
-     *  Caso ela exista, escrever o seu nome. Caso ela não exista, escrever para o usuário plataforma não encontrada
-     *  @param: int id 
-    */
+    }//fim do metodo menuListarJogo
+
+    /**
+     * Funcao do metodo: Este metodo serve para buscar por uma plataforma com o id como chave de pesquisa.
+     * @param id Chave de pesquisa id.
+     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
+     */
     private static void menuBuscarPlataforma(int id) throws Exception
     {
         if(id>0)
@@ -144,19 +149,22 @@ class CrudJogos
             else
                 MyIO.println("Plataforma nao encontrada");
         }
-    }
+    }//fim do metodo menuBuscarPlataforma
     
-    /** 
-     * metodo que retorna um determino objeto do tipo plataforma
-     * @param: int id
-     * @return: Plataforma 
-    */
+    /**
+     * Funcao do metodo: Este metodo serve para buscar uma plataforma passando como chave de pesquisa o id.
+     * @param id Chave de pesquisa id.
+     * @return Objeto do tipo Plataforma com a plataforma procurada.
+     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
+     */
     private static Plataforma buscarPlataforma(int id) throws Exception
     {
         return (Plataforma)arqPlataformas.buscar(id);
-    }
+    }//fim do metodo buscarPlataforma
+
     /**
-     * metodo que exibe na tela do usuario a opção de buscar um jogo
+     * Funcao do metodo: Este metodo serve para exibir na tela do usuario o menu de busca de jogo.
+     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
     private static void menuBuscarJogo() throws Exception
     {
@@ -192,11 +200,13 @@ class CrudJogos
                 menuBuscarPlataforma(jogosDaPlataforma.getIdPlataforma());
             }
         }
-    }
+    }//fim do metodo menuBuscarJogo
+
     /**
-     * metodo que retorna se um objeto do tipo jogo existe a partir de uma id
-     * @param: int id
-     * @return: boolean resp
+     * Funcao do metodo: Este metodo serve para buscar um jogo passando como chave de pesquisa o id.
+     * @param id Chave de pesquisa id.
+     * @return Valor booleano indicando se o jogo procurado foi encontrado.
+     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
     public static boolean buscarJogo(int id) throws Exception
     {
@@ -205,18 +215,22 @@ class CrudJogos
         if(jogo!=null)
             resp=true;
         return resp;
-    }
+    }//fim do metodo buscarJogo
+    
     /**
-     * metodo que retorna um objeto do tipo jogo a partir de uma id
-     * @param: int id
-     * @return: Jogo
+     * Funcao do metodo: Este metodo serve para obter um objeto do tipo Jogo do arquivo passando como chave de pesquisa o id.
+     * @param id Chave de pesquisa id.
+     * @return Objeto do tipo Jogo com o jogo encontrado.
+     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
     private static Jogo getJogo(int id) throws Exception
     {
         return (Jogo)arqJogos.buscar(id);
-    }
+    }//fim do metodo getJogo
+
     /**
-     * metodo que possui um menu de inclusão de um determinado jogo para um usuário
+     * Funcao do metodo: Este metodo serve para exibir na tela do usuario o menu de inclusao de jogo.
+     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
     private static void menuIncluirJogo() throws Exception
     {
@@ -274,10 +288,15 @@ class CrudJogos
         while(adicionarMaisPlataformas=='s');
 
         inserirJogo(titulo, score, genero, plataformas);
-    }
+    }//fim do metodo menuIncluirJogo
+
     /**
-     * metodo que insere um novo objeto do tipo jogo a partir de um titulo, score, genero e plataforma
-     * @param: String titulo, byte score, String nomeDoGenero, ArrayList<String> nomeDaPlataforma
+     * Funcao do metodo: Este metodo serve para inserir um jogo no arquivo de jogos.
+     * @param titulo Titulo do jogo.
+     * @param score Score do jogo (de acordo com o metacritic).
+     * @param nomeDoGenero Nome do genero do jogo.
+     * @param nomeDaPlataforma Plataformas do jogo.
+     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
     private static void inserirJogo(String titulo, byte score, String nomeDoGenero, ArrayList<String> nomeDaPlataforma) throws  Exception
     {
@@ -307,18 +326,30 @@ class CrudJogos
             idxJogoparaJdp.inserir(idJogo, idJogosDaPlataforma);
             idxPlataformaparaJdp.inserir(idPlataforma, idJogosDaPlataforma);
         }
-    }
+    }//fim do metodo inserirJogo
+
     /**
-     * metodo que insere um novo objeto do tipo jogo a partir de um titulo, score, genero e plataforma
-     * @param: String titulo, byte score, String nomeDoGenero, ArrayList<String> nomeDaPlataforma
+     * Funcao do metodo: Este metodo serve para inserir um jogo no arquivo de jogos.
+     * @param titulo Titulo do jogo.
+     * @param score Score do jogo (de acordo com o metacritic).
+     * @param nomeDoGenero Nome do genero do jogo.
+     * @param nomeDaPlataforma Nome da plataforma do jogo.
+     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
     private static void inserirJogo(String titulo, byte score, String nomeDoGenero, String... nomeDaPlataforma) throws Exception
     {
         ArrayList<String> plataforma = new ArrayList<>(Arrays.asList(nomeDaPlataforma));
         inserirJogo(titulo, score, nomeDoGenero, plataforma);
-    }
+    }//fim do metodo inserirJogo
+
     /**
      * metodo que retorna um objeto do tipo genero a partir de uma busca em todos os generos.
+     */
+    /**
+     * Funcao do metodo: Este metodo serve para obter um objeto do tipo Genero passando como chave de pesquisa o nome do genero.
+     * @param nomeDoGenero Chave de pesquisa.
+     * @return Objeto do tipo Genero encontrado.
+     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
     private static Genero getGenero(String nomeDoGenero) throws Exception
     {
@@ -344,23 +375,13 @@ class CrudJogos
             resp=genero.get(i);
 
         return resp;
-    }
+    }//fim do metodo getGenero
+
     /**
-     * metodo que retorna se um caracter é um numero
-     * @param: char c
-     * @return: boolean ehNumero
-     */
-    public static boolean ehNumero(char c)
-    {
-        boolean ehNumero=false;
-        if(c=='0'||c=='1'||c=='2'||c=='3'||c=='4'||c=='5'||c=='6'||c=='7'||c=='8'||c=='9')
-            ehNumero=true;
-        return ehNumero;
-    }//fim do metodo ehNumero
-    /**
-     * metodo que busca um objeto do tipo plataforma a partir de uma busca em todas as plataformas
-     * @param: String nomeDaPlataforma
-     * @return: Plataforma
+     * Funcao do metodo: Este metodo serve para obter um objeto do tipo Plataforma passando como chave de pesquisa o nome da plataforma.
+     * @param nomeDaPlataforma Chave de pesquisa.
+     * @return Objeto do tipo Plataforma encontrado.
+     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
     private static Plataforma getPlataforma(String nomeDaPlataforma) throws Exception
     {
@@ -386,9 +407,11 @@ class CrudJogos
             resp=plataforma.get(i);
 
         return resp;
-    }
+    }//fim do metodo getPlataforma
+
     /**
-     * metodo que possui um menu de exclusao permitindo ao usuario a exclusao de um determinado jogo
+     * Funcao do metodo: Este metodo serve para exibir na tela do usuario o menu de exclusao de jogo.
+     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
     private static void menuExcluirJogo() throws Exception
     {
@@ -439,10 +462,12 @@ class CrudJogos
             if(confirmacao=='s')
                 excluirJogo(id);
         }
-    }
+    }//fim do metodo menuExcluirJogo
+    
     /**
-     * metodo que exclui um determinado jogo a partir de uma id
-     * @param: int id
+     * Funcao do metodo: Este metodo serve para realizar a exclusao de um jogo do arquivo passando como chave o id.
+     * @param id Chave de exclusao.
+     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
     private static void excluirJogo(int id) throws Exception
     {
@@ -460,20 +485,11 @@ class CrudJogos
             }
             resp=true;
         }
-    }
+    }//fim do metodo excluirJogo
 
-    private static void menuAlterarJogo() throws Exception
-    {
-        menuListarJogo();
-        MyIO.println();
-        MyIO.print("Digite o id que voce deseja alterar:");  
-        int id = MyIO.readInt(); 
-        excluirJogo(id);
-        menuIncluirJogo();
-
-    }
     /**
-     * metodo que possui um menu em que o usuario digita o numero da plataforma e é exibido os jogos dessa determinada plataforma
+     * Funcao do metodo: Este metodo serve para exibir o menu de listagem de jogos por plataforma.
+     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
     private static void menuListarJogosPorPlataforma() throws Exception
     {
@@ -503,9 +519,11 @@ class CrudJogos
             Jogo jogo = (Jogo) arqJogos.buscar(jogosDaPlataforma.getIdJogo());
             MyIO.println(jogo.toString());
         }
-    }
+    }//fim do metodo menuListarJogosPorPlataforma
+
     /**
-     * metodo que lista todas as plataformas 
+     * Funcao do metodo: Este metodo serve para exibir na tela do usuario o menu de listagem das plataformas.
+     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
     private static void menuListarPlataformas() throws Exception
     {
@@ -525,9 +543,11 @@ class CrudJogos
                 MyIO.println();
             }
         }
-    }
+    }//fim do metodo menuListarPlataformas
+
     /**
-     * metodo que lista todos os jogos de um determinado genero
+     * Funcao do metodo: Este metodo serve para exibir na tela do usuario o menu de listagem de jogos por genero.
+     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
     private static void menuListarJogosPorGenero() throws Exception
     {
@@ -568,9 +588,11 @@ class CrudJogos
         else
             MyIO.println("Genero nao encontrado");
         MyIO.pause();
-    }
+    }//fim do metodo menuListarJogosPorGenero
+
     /**
-     * metodo que lista todos os generos disponiveis
+     * Funcao do metodo: Este metodo serve para exibir na tela do usuario o menu de listagem de genero.
+     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
     private static void menuListarGenero() throws Exception
     {
@@ -590,9 +612,11 @@ class CrudJogos
                 MyIO.println();
             }
         }
-    }
+    }//fim do metodo menuListarGenero
+
     /**
-     * metodo que exibe um menu para uma nova inserção de um genero de um jogo
+     * Funcao do metodo: Este metodo serve para exibir na tela do usuario o menu de insercao de genero de um jogo.
+     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
     private static void menuInserirGeneroDeJogo() throws Exception
     {
@@ -619,12 +643,13 @@ class CrudJogos
 
         if(confirmacao=='s')
             MyIO.println("Genero incluido com ID: "+inserirGenero(tipo));
-    }
+    }//fim do metodo menuInserirGenerosDeJogo
+
     /**
-     * metodo que insere um novo genero e retorna sua id.
-     * Caso o genero já exista, é retornado o id -1
-     * @param: String nomeDoGenero
-     * @return: int resp
+     * Funcao do metodo: Este metodo serve para inserir um genero no arquivo de genero.
+     * @param nomeDoGenero Nome do genero que sera inserido no arquivo de genero.
+     * @return Id do genero inserido.
+     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
     private static int inserirGenero(String nomeDoGenero) throws Exception
     {
@@ -638,17 +663,21 @@ class CrudJogos
             resp=getGenero(nomeDoGenero).getID();
 
         return resp;
-    }
+    }//fim do metodo inserirGenero
+
     /**
-     * Menu que lista todas as plataformas disponiveis
+     * Funcao do metodo: Este metodo serve para exibir na tela do usuario o menu de listagem de plataformas disponiveis.
+     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
     private static void menuListarPlataformasDisponiveis() throws Exception
     {
         MyIO.println("Plataformas disponiveis");
         menuListarPlataformas();
-    }
+    }//fim do metodo menuListarPlataformasDisponiveis
+
     /**
-     * Menu de inserção de uma nova plataforma
+     * Funcao do metodo: Este metodo serve para exibir na tela do usuario o menu de insercao de plataforma.
+     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
     private static void menuInserirPlataforma() throws Exception
     {
@@ -676,12 +705,13 @@ class CrudJogos
         if(confirmacao=='s')
             MyIO.println("Plataforma incluida com ID: "+inserirPlataforma(nome));
 
-    }
+    }//fim do metodo menuInserirPlataforma
+
     /**
-     * metodo que insere uma nova plataforma e retorna sua id.
-     * Caso a plataforma já exista, é retornado o id -1
-     * @param: String nomeDaPlataforma
-     * @return: int resp
+     * Funcao do metodo: Este metodo serve para inserir uma plataforma no arquivo de plataformas.
+     * @param nomeDaPlataforma Nome da plataforma que sera inserida.
+     * @return Id da plataforma inserida.
+     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
     private static int inserirPlataforma(String nomeDaPlataforma) throws Exception
     {
@@ -695,9 +725,11 @@ class CrudJogos
             resp=getPlataforma(nomeDaPlataforma).getID();
 
         return resp;
-    }
+    }//fim do metodo inserirPlataforma
+
     /**
-     * metodo que povoa o banco de dados com plataformas, generos e jogos
+     * Funcao do metodo: Este metodo serve para povoar o banco de dados.
+     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
     private static void povoarBancoDeDados() throws Exception
     {
@@ -746,5 +778,5 @@ class CrudJogos
         inserirJogo("FarCry 4", (byte)85, "FPS", "Windows", "PlayStation 4", "PlayStation 3", "Xbox 360", "Xbox One");
         inserirJogo("Need for Speed Rivals", (byte)80, "Corrida", "Windows", "PlayStation 3", "PlayStation 4", "Xbox 360", "Xbox One");
         inserirJogo("Call of Duty Black Ops III", (byte)81, "FPS", "Windows", "Mac OS", "PlayStation 3", "PlayStation 4", "Xbox 360", "Xbox One");*/
-    }
+    }//fim do metodo povoarBancoDeDados
 }
