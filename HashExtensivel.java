@@ -6,6 +6,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
+/**
+ * @author Marcos Andre Silveira Kutova
+ */
 class HashExtensivel {
 
     private RandomAccessFile arqDiretorio;

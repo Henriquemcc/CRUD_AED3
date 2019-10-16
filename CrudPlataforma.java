@@ -6,6 +6,10 @@ class CrudPlataforma
     private static ArquivoIndexado<Plataforma> arqPlataformas;
     private static DecimalFormat df;
 
+    /**
+     * Funcao do metodo: Este metodo serve para executar o CrudPlataforma.
+     * @param args Argumentos padrao do metodo main.
+     */
     public static void main(String[]args)
     {
         int comando=-1;
@@ -13,7 +17,7 @@ class CrudPlataforma
         {
             try
             {
-                criaArquivo();
+                criarArquivo();
                 boolean repetir;
                 do
                 {
@@ -42,7 +46,7 @@ class CrudPlataforma
                 else if(comando==4)
                     menuExcluirPlataformas();
                 else if(comando==5)
-                    menuPovoarBancoDeDados();
+                    povoarBancoDeDados();
             }
             catch(Exception e)
             {
@@ -50,13 +54,20 @@ class CrudPlataforma
             }
         }
         while(comando!=0);
-    }
+    }//fim do metodo main
 
-    private static void criaArquivo()throws Exception
+    /**
+     * Funcao do metodo: Este metodo serve para criar todos os arquivos necessarios para o CRUD.
+     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
+     */
+    private static void criarArquivo()throws Exception
     {
         arqPlataformas = new ArquivoIndexado<>(Plataforma.class.getConstructor(), "plataformas.db");
-    }
+    }//fim do metodo criarArquivo
 
+    /**
+     * Funcao do metodo: Este metodo serve para exibir o menu de todas as opcoes do CRUD.
+     */
     private static void exibirMenu()
     {
         MyIO.println("\n\n------------------------------------------------");
@@ -69,11 +80,15 @@ class CrudPlataforma
         MyIO.println("9 - Povoar BD");
         MyIO.println("0 - Sair");
         MyIO.print("\nOpcao: ");
-    }
+    }//fim do metodo exibirMenu
 
+    /**
+     * Funcao do metodo: Este metodo serve para exibir na tela do usuario o menu de listagem das plataformas.
+     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
+     */
     private static void menuListarPlataformas() throws Exception
     {
-        criaArquivo();
+        criarArquivo();
         if(arqPlataformas!=null)
         {
             Object[] plataformas =arqPlataformas.listar();
@@ -90,26 +105,12 @@ class CrudPlataforma
         }
         else
             MyIO.println("Nenhuma plataforma registrada");
-    }
+    }//fim do metodo menuListarPlataformas
 
-    public static String listar() throws Exception
-    {
-        String resp="";
-        criaArquivo();
-        if(arqPlataformas!=null)
-        {
-            Object[] plataformas =arqPlataformas.listar();
-            if(plataformas.length!=0)
-            {
-                for (Object plataforma : plataformas) {
-                    Plataforma p = (Plataforma) plataforma;
-                    resp = p.getID() + " " + p.getNome() + " ";
-                }
-            }
-        }
-        return resp;
-    }
-
+    /**
+     * Funcao do metodo: Este metodo serve para exibir na tela do usuario o menu de busca de plataformas.
+     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
+     */
     private static void menuBuscarPlataformas() throws Exception
     {
         MyIO.println("\nBUSCA");
@@ -136,8 +137,12 @@ class CrudPlataforma
             MyIO.println(plataforma.toString());
         else
             MyIO.println("Plataforma nao encontrada");
-    }
+    }//fim do metodo menuBuscarPlataformas
 
+    /**
+     * Funcao do metodo: Este metodo serve para exibir na tela do usuario o menu de inclusao de plataformas.
+     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
+     */
     private static void menuIncluirPlataformas() throws Exception
     {
         MyIO.println("\nINCLUSAO");
@@ -162,21 +167,31 @@ class CrudPlataforma
         while(repetir);
 
         MyIO.println("Plataforma incluida com ID: "+incluirPlataforma(nome));
-    }
-
+    }//fim do metodo menuIncluirPlataformas
+    
+    /**
+     * Funcao do metodo: Este metodo serve para incluirPlataformas no arquivo de plataformas.
+     * @param nome Nome da plataforma que sera incluida.
+     * @return Id da plataforma incluida.
+     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
+     */
     private static int incluirPlataforma(String nome) throws Exception
     {
         if(arqPlataformas==null)
-            criaArquivo();
+            criarArquivo();
 
         Plataforma plataforma=new Plataforma(-1, nome);
 
         return arqPlataformas.incluir(plataforma);
-    }
+    }//fim do metodo incluirPlataformas
 
+    /**
+     * Funcao do metodo: Este metodo serve para exibir na tela do usuario o menu de exclusao de plataformas.
+     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
+     */
     private static void menuExcluirPlataformas() throws Exception
     {
-        criaArquivo();
+        criarArquivo();
         MyIO.println("\nEXCLUSAO");
         int id=0;
         boolean repetir;
@@ -223,14 +238,23 @@ class CrudPlataforma
             if(confirmacao=='s')
                 excluirPlataforma(id);
         }
-    }
+    }//fim do metodo menuExcluirPlataformas
 
+    /**
+     * Funcao do metodo: Este metodo serve para realizar a exclusao de uma plataforma do arquivo platafromas.
+     * @param id Id da plataforma a ser excluida.
+     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
+     */
     private static void excluirPlataforma(int id) throws Exception
     {
         arqPlataformas.excluir(id);
-    }
+    }//fim do metodo excluirPlataforam
 
-    private static void menuPovoarBancoDeDados() throws Exception
+    /**
+     * Funcao do metodo: Este metodo serve para povoar o banco de dados.
+     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
+     */
+    private static void povoarBancoDeDados() throws Exception
     {
         incluirPlataforma("PlayStation 1");
         incluirPlataforma("PlayStation 2");
@@ -247,17 +271,5 @@ class CrudPlataforma
         incluirPlataforma("Android");
         incluirPlataforma("iOS");
         incluirPlataforma("Windows Phone");
-    }
-
-    public static void buscarPlataforma(int id) throws Exception//tmp
-    {
-        criaArquivo();
-        if(id <=0)
-            return;
-        Plataforma l;
-        if( (l = (Plataforma)arqPlataformas.buscar(id))!=null )
-            MyIO.println("Plataforma: "+l.getNome());
-        else
-            MyIO.println("Plataforma nao encontrada");
-    }
+    }//fim do metodo povoarBancoDeDados
 }

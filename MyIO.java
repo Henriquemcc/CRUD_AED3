@@ -1,4 +1,3 @@
-package packageone;
 import java.io.*;
 import java.nio.charset.*;
 import java.util.InputMismatchException;
@@ -11,7 +10,7 @@ class MyIO
    private static String charset = "ISO-8859-1";
 
    /**
-    * Funcao do metodo: Este metodo serve para altrar o charset da classe MyIO
+    * Funcao do metodo: Este metodo serve para altrar o charset da classe MyIO.
     * @param charset_ Novo charset.
     */
    public static void setCharset(String charset_)
@@ -314,7 +313,7 @@ class MyIO
    }//fim do metodo println
 
    /**
-    * Funcao do metodo: Este metodo serve para imprimir uma string formatada na tela do usuario
+    * Funcao do metodo: Este metodo serve para imprimir uma string formatada na tela do usuario.
     * @param formato Formato do que sera impresso.
     * @param x Numero real de argumento.
     */
@@ -336,7 +335,7 @@ class MyIO
    }//fim printf
 
    /**
-    * Funcao do metodo: Este metodo serve para imprimir uma string formatada na tela do usuario
+    * Funcao do metodo: Este metodo serve para imprimir uma string formatada na tela do usuario.
     * @param formato Formato do que sera imprsso.
     * @param args Argumentos da String formatada.
     */
@@ -622,7 +621,7 @@ class MyIO
    }//fim do metodo readString
 
    /**
-    * Funcao do metodo: Este metodo serve para ler da entrada padrao (teclado) uma String de uma linha
+    * Funcao do metodo: Este metodo serve para ler da entrada padrao (teclado) uma String de uma linha.
     * @return String de uma linha que foi lida.
     */
    public static String readLine()
