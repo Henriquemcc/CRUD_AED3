@@ -1,12 +1,10 @@
-
 import java.io.IOException;
 
-public interface Registro
+interface Registro
 {
     
-    public int getID();
-    public void setID(int n);
-    public byte[] toByteArray() throws IOException;
-    public void fromByteArray( byte[] ba ) throws IOException;
-    
+    int getID();
+    void setID(int n);
+    byte[] toByteArray() throws IOException;
+    void fromByteArray(byte[] ba) throws IOException;
 }

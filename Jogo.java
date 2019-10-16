@@ -6,12 +6,11 @@ public class Jogo implements Registro
     private int idGenero;
     private String titulo;
     private byte score;
-    //private dataLancamento;
+
     //Metodos construtores
     public Jogo()
     {
         this(0, 0, "", (byte)0);
-        //dataLancamento;
     }
 
     public Jogo(int id, int idGenero, String titulo, byte score)
@@ -29,17 +28,17 @@ public class Jogo implements Registro
         this.id=id;
     }
 
-    public void setIdGenero(int idGenero)
+    private void setIdGenero(int idGenero)
     {
         this.idGenero=idGenero;
     }
 
-    public void setTitulo(String titulo)
+    private void setTitulo(String titulo)
     {
         this.titulo=titulo.toUpperCase();
     }
 
-    public void setScore(byte score)
+    private void setScore(byte score)
     {
         this.score=score;
     }

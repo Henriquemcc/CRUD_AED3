@@ -1,10 +1,9 @@
-
-public class CRUDJOGOSDAPLATAFORMA
+class CrudJogosDaPlataforma
 {
     
     private static ArquivoIndexado<JogosDaPlataforma> arqJogosDaPlataforma;
     
-    public static void criaArquivo()throws Exception{
+    private static void criaArquivo()throws Exception{
         arqJogosDaPlataforma = new ArquivoIndexado<>(JogosDaPlataforma.class.getConstructor(), "jogosdaplataforma.db");
     }
     //LISTA TODOS OS JOGOS DE UMA PLATAFORMA
@@ -13,11 +12,10 @@ public class CRUDJOGOSDAPLATAFORMA
         criaArquivo();
         Object[] JogosDaPlataforma = arqJogosDaPlataforma.listar();
         JogosDaPlataforma jdp;
-        for(int i=0; i<JogosDaPlataforma.length; i++)
-        {
-            jdp = (JogosDaPlataforma)JogosDaPlataforma[i];
-            if(jdp.getIdPlataforma()==idPlataforma){
-                CRUDJOGOS.buscarJogo(jdp.getIdJogo());
+        for (Object o : JogosDaPlataforma) {
+            jdp = (JogosDaPlataforma) o;
+            if (jdp.getIdPlataforma() == idPlataforma) {
+                CrudJogos.buscarJogo(jdp.getIdJogo());
             }
         }
         
@@ -28,11 +26,10 @@ public class CRUDJOGOSDAPLATAFORMA
         criaArquivo();
         Object[] JogosDaPlataforma = arqJogosDaPlataforma.listar();
         JogosDaPlataforma jdp;
-        for(int i=0; i<JogosDaPlataforma.length; i++)
-        {
-            jdp = (JogosDaPlataforma)JogosDaPlataforma[i];
-            if(jdp.getIdJogo()==idJogo){
-                CRUDPLATAFORMA.buscarPlataforma(jdp.getIdPlataforma());
+        for (Object o : JogosDaPlataforma) {
+            jdp = (JogosDaPlataforma) o;
+            if (jdp.getIdJogo() == idJogo) {
+                CrudPlataforma.buscarPlataforma(jdp.getIdPlataforma());
             }
         }
         
@@ -53,20 +50,20 @@ public class CRUDJOGOSDAPLATAFORMA
         Object[] jdps = arqJogosDaPlataforma.listar();
         JogosDaPlataforma jdp;
         if(mode){
-            for(int i=0;i<jdps.length;i++){
-                jdp = (JogosDaPlataforma)jdps[i];
-                if(jdp.getIdPlataforma()==id){
-                    if( arqJogosDaPlataforma.buscar(jdp.getID())!=null ){
+            for (Object o : jdps) {
+                jdp = (JogosDaPlataforma) o;
+                if (jdp.getIdPlataforma() == id) {
+                    if (arqJogosDaPlataforma.buscar(jdp.getID()) != null) {
                         return arqJogosDaPlataforma.excluir(jdp.getID());
                     }
                 }
             }
         }
         else{
-            for(int i=0;i<jdps.length;i++){
-                jdp = (JogosDaPlataforma)jdps[i];
-                if(jdp.getIdJogo()==id){
-                    if( arqJogosDaPlataforma.buscar(jdp.getID())!=null ){
+            for (Object o : jdps) {
+                jdp = (JogosDaPlataforma) o;
+                if (jdp.getIdJogo() == id) {
+                    if (arqJogosDaPlataforma.buscar(jdp.getID()) != null) {
                         return arqJogosDaPlataforma.excluir(jdp.getID());
                     }
                 }

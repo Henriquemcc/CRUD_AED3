@@ -27,12 +27,12 @@ public class JogosDaPlataforma implements Registro
         this.id=id;
     }
 
-    public void setIdPlataforma(int idPlataforma)
+    private void setIdPlataforma(int idPlataforma)
     {
         this.idPlataforma=idPlataforma;
     }
 
-    public void setIdJogo(int idJogo)
+    private void setIdJogo(int idJogo)
     {
         this.idJogo=idJogo;
     }

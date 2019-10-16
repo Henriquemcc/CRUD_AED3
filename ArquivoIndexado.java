@@ -2,30 +2,26 @@ import java.io.*;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 
-public class ArquivoIndexado<T extends Registro>
+class ArquivoIndexado<T extends Registro>
 {
-    
-    public String nomeArquivo;
-    public String nomeDiretorio;
-    public String nomeListaCestos;
-    public RandomAccessFile arquivo;
-    Constructor<T> construtor;
-    private HashExtensivel índice;
+
+    private RandomAccessFile arquivo;
+    private final Constructor<T> construtor;
+    private HashExtensivel indice;
     
     public ArquivoIndexado(Constructor<T> c, String n) throws Exception
     {
         construtor = c;
-        nomeArquivo = n;
         File d = new File("dados");
         if( !d.exists() )
             d.mkdir();
-        arquivo = new RandomAccessFile("dados/"+nomeArquivo, "rw");
+        arquivo = new RandomAccessFile("dados/"+ n, "rw");
         if(arquivo.length()<4)
-            arquivo.writeInt(0);        
-        
-        nomeDiretorio = "diretorio."+nomeArquivo;
-        nomeListaCestos = "cestos."+nomeArquivo;
-        índice = new HashExtensivel(4, nomeDiretorio, nomeListaCestos);
+            arquivo.writeInt(0);
+
+        String nomeDiretorio = "diretorio." + n;
+        String nomeListaCestos = "cestos." + n;
+        indice = new HashExtensivel(4, nomeDiretorio, nomeListaCestos);
     }
     
     public int incluir(T obj) throws Exception
@@ -39,16 +35,16 @@ public class ArquivoIndexado<T extends Registro>
         arquivo.seek(arquivo.length());
         long endereco = arquivo.getFilePointer();
         obj.setID(ultimoID);
-        arquivo.writeByte(' ');             // lápide
+        arquivo.writeByte(' ');             // lapide
         byte[] byteArray = obj.toByteArray();
         arquivo.writeInt(byteArray.length); // indicador de tamanho do registro
         arquivo.write(byteArray);           // vetor de bytes que representa o registro
-        índice.insere(ultimoID, endereco);
+        indice.insere(ultimoID, endereco);
         return obj.getID();
     }
     
-    // Método apenas para testes, pois geralmente a memória principal raramente
-    // será suficiente para manter todos os registros simultaneamente
+    // Metodo apenas para testes, pois geralmente a memoria principal raramente
+    // sera suficiente para manter todos os registros simultaneamente
     public Object[] listar() throws Exception
     {
         ArrayList<T> lista = new ArrayList<>();
@@ -78,7 +74,7 @@ public class ArquivoIndexado<T extends Registro>
         int s;
         T obj;
 
-        long endereco = índice.busca(id);
+        long endereco = indice.busca(id);
         if(endereco!=-1)
         {
             obj = construtor.newInstance();
@@ -96,12 +92,12 @@ public class ArquivoIndexado<T extends Registro>
     
     public boolean excluir(int id) throws Exception
     {
-        long endereco = índice.busca(id);
+        long endereco = indice.busca(id);
         if(endereco!=-1)
         {
             arquivo.seek(endereco);
             arquivo.writeByte('*');
-            índice.remove(id);
+            indice.remove(id);
             return true;
         }
         else
