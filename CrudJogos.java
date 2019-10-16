@@ -27,7 +27,7 @@ class CrudJogos
                     {
                         exibirMenu();
                         comando=MyIO.readInt();
-                        if(comando<0 || comando>11)
+                        if(comando<0 || comando>12)
                             throw new InputMismatchException("Erro: Opcao Invalida!");
                         repetir=false;
                     }
@@ -61,6 +61,8 @@ class CrudJogos
                     menuInserirPlataforma();
                 else if(comando==11)
                     povoarBancoDeDados();
+                else if(comando==12) 
+                    menuAlterarJogo();
             }
             catch(Exception e)
             {
@@ -105,6 +107,7 @@ class CrudJogos
         MyIO.println("9 - Listar Plataformas disponiveis");
         MyIO.println("10 - Inserir Plataforma");
         MyIO.println("11 - Povoar BD");
+        MyIO.println("12 - Alterar jogo");
         MyIO.println("0 - Sair");
         MyIO.print("\nOpcao: ");
     }
@@ -457,6 +460,17 @@ class CrudJogos
             }
             resp=true;
         }
+    }
+
+    private static void menuAlterarJogo() throws Exception
+    {
+        menuListarJogo();
+        MyIO.println();
+        MyIO.print("Digite o id que voce deseja alterar:");  
+        int id = MyIO.readInt(); 
+        excluirJogo(id);
+        menuIncluirJogo();
+
     }
     /**
      * metodo que possui um menu em que o usuario digita o numero da plataforma e é exibido os jogos dessa determinada plataforma
