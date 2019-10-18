@@ -733,50 +733,17 @@ class CrudJogos
      */
     private static void povoarBancoDeDados() throws Exception
     {
-        //Plataformas
-        /*
-        inserirPlataforma("PlayStation One");
-        inserirPlataforma("PlayStation 2");
-        inserirPlataforma("PlayStation 3");
-        inserirPlataforma("PlayStation 4");
-        inserirPlataforma("Xbox");
-        inserirPlataforma("Xbox 360");
-        inserirPlataforma("Xbox One");
-        inserirPlataforma("Nintendo GameCube");
-        inserirPlataforma("Nintendo Wii");
-        inserirPlataforma("Nintendo WiiU");
-        inserirPlataforma("Nintendo DS");
-        inserirPlataforma("Nintendo 3DS");
-        inserirPlataforma("Nintendo Switch");
-        inserirPlataforma("Windows");
-        inserirPlataforma("Mac OS");
-        inserirPlataforma("Linux");
-        inserirPlataforma("Android");
-        inserirPlataforma("iOS");
-        inserirPlataforma("Windows Phone");
-        */
-
-        //Generos
-        /*
-        inserirGenero("FPS");
-        inserirGenero("MOBA");
-        inserirGenero("Battle Royale");
-        inserirGenero("Esportes");
-        inserirGenero("Acao");
-        inserirGenero("Aventura");
-        inserirGenero("RPG");
-        */
         //Jogos
         inserirJogo("Counter Strike: Global Offensive", (byte)83,"FPS" ,"Windows", "Mac OS", "Linux", "Xbox", "Xbox 360");
         inserirJogo("World of Warcraft", (byte)93, "MOBA","Windows", "Mac OS");
         inserirJogo("WatchDogs 2", (byte)82, "Acao", "Windows", "PlayStation 4", "Xbox One");
         inserirJogo("Assassin's Creed Unity", (byte)70, "Acao", "Windows", "PlayStation 4", "Xbox One");
-        //inserirJogo("Assassin's Creed III", (byte)72, "Acao", "Windows", "PlayStation 3", "PlayStation 4", "Xbox 360", "Xbox One", "WiiU");
-        //inserirJogo("Overwatch", (byte)91, "FPS", "Windows", "PlayStation 4", "Xbox One", "Nintendo Switch");
-        /*inserirJogo("Assassin's Creed Rougue", (byte)74, "Acao", "PlayStation 3", "Xbox 360", "Windows", "PlayStation 4", "Xbox One", "Nintendo Switch");
+        inserirJogo("Assassin's Creed III", (byte)72, "Acao", "Windows", "PlayStation 3", "PlayStation 4", "Xbox 360", "Xbox One", "WiiU");
+        inserirJogo("Overwatch", (byte)91, "FPS", "Windows", "PlayStation 4", "Xbox One", "Nintendo Switch");
+        inserirJogo("Assassin's Creed Rougue", (byte)74, "Acao", "PlayStation 3", "Xbox 360", "Windows", "PlayStation 4", "Xbox One", "Nintendo Switch");
         inserirJogo("Battlefield 1", (byte)88, "FPS", "Windows", "PlayStation 4", "Xbox One");
         inserirJogo("FarCry 4", (byte)85, "FPS", "Windows", "PlayStation 4", "PlayStation 3", "Xbox 360", "Xbox One");
         inserirJogo("Need for Speed Rivals", (byte)80, "Corrida", "Windows", "PlayStation 3", "PlayStation 4", "Xbox 360", "Xbox One");
-        inserirJogo("Call of Duty Black Ops III", (byte)81, "FPS", "Windows", "Mac OS", "PlayStation 3", "PlayStation 4", "Xbox 360", "Xbox One");*/
+        inserirJogo("Call of Duty Black Ops III", (byte)81, "FPS", "Windows", "Mac OS", "PlayStation 3", "PlayStation 4", "Xbox 360", "Xbox One");
     }//fim do metodo povoarBancoDeDados
 }
