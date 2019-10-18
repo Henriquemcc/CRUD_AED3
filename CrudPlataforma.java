@@ -1,92 +1,13 @@
 import java.text.DecimalFormat;
 import java.util.InputMismatchException;
 
-class CrudPlataforma
+class CrudPlataforma extends Crud
 {
-    private static ArquivoIndexado<Plataforma> arqPlataformas;
-    private static DecimalFormat df;
-
-    /**
-     * Funcao do metodo: Este metodo serve para executar o CrudPlataforma.
-     * @param args Argumentos padrao do metodo main.
-     */
-    public static void main(String[]args)
-    {
-        int comando=-1;
-        do
-        {
-            try
-            {
-                criarArquivo();
-                boolean repetir;
-                do
-                {
-                    try
-                    {
-                        exibirMenu();
-                        comando=MyIO.readInt();
-                        if(comando<0 || comando>9)
-                            throw new InputMismatchException("Erro: Opcao Invalida!");
-                        repetir=false;
-                    }
-                    catch(InputMismatchException e)
-                    {
-                        MyIO.println(e.toString());
-                        repetir=true;
-                    }
-                }
-                while(repetir);
-
-                if(comando==1)
-                    menuListarPlataformas();
-                else if(comando==2)
-                    menuBuscarPlataformas();
-                else if(comando==3)
-                    menuIncluirPlataformas();
-                else if(comando==4)
-                    menuExcluirPlataformas();
-                else if(comando==5)
-                    povoarBancoDeDados();
-            }
-            catch(Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
-        while(comando!=0);
-    }//fim do metodo main
-
-    /**
-     * Funcao do metodo: Este metodo serve para criar todos os arquivos necessarios para o CRUD.
-     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
-     */
-    private static void criarArquivo()throws Exception
-    {
-        arqPlataformas = new ArquivoIndexado<>(Plataforma.class.getConstructor(), "plataformas.db");
-    }//fim do metodo criarArquivo
-
-    /**
-     * Funcao do metodo: Este metodo serve para exibir o menu de todas as opcoes do CRUD.
-     */
-    private static void exibirMenu()
-    {
-        MyIO.println("\n\n------------------------------------------------");
-        MyIO.println("                    MENU");
-        MyIO.println("------------------------------------------------");
-        MyIO.println("1 - Listar plataformas");
-        MyIO.println("2 - Buscar plataformas");
-        MyIO.println("3 - Incluir plataformas");
-        MyIO.println("4 - Excluir plataformas");
-        MyIO.println("9 - Povoar BD");
-        MyIO.println("0 - Sair");
-        MyIO.print("\nOpcao: ");
-    }//fim do metodo exibirMenu
-
     /**
      * Funcao do metodo: Este metodo serve para exibir na tela do usuario o menu de listagem das plataformas.
      * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
-    private static void menuListarPlataformas() throws Exception
+    public static void menuListarPlataformas() throws Exception
     {
         criarArquivo();
         if(arqPlataformas!=null)
@@ -111,8 +32,9 @@ class CrudPlataforma
      * Funcao do metodo: Este metodo serve para exibir na tela do usuario o menu de busca de plataformas.
      * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
-    private static void menuBuscarPlataformas() throws Exception
+    public static void menuBuscarPlataformas() throws Exception
     {
+        criarArquivo();
         MyIO.println("\nBUSCA");
         int id=0;
         boolean repetir;
@@ -143,8 +65,9 @@ class CrudPlataforma
      * Funcao do metodo: Este metodo serve para exibir na tela do usuario o menu de inclusao de plataformas.
      * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
-    private static void menuIncluirPlataformas() throws Exception
+    public static void menuIncluirPlataformas() throws Exception
     {
+        criarArquivo();
         MyIO.println("\nINCLUSAO");
         String nome=MyIO.readLine("Nome: ");
         char confirmacao;
@@ -177,11 +100,8 @@ class CrudPlataforma
      */
     private static int incluirPlataforma(String nome) throws Exception
     {
-        if(arqPlataformas==null)
-            criarArquivo();
-
+        criarArquivo();
         Plataforma plataforma=new Plataforma(-1, nome);
-
         return arqPlataformas.incluir(plataforma);
     }//fim do metodo incluirPlataformas
 
@@ -189,7 +109,7 @@ class CrudPlataforma
      * Funcao do metodo: Este metodo serve para exibir na tela do usuario o menu de exclusao de plataformas.
      * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
-    private static void menuExcluirPlataformas() throws Exception
+    public static void menuExcluirPlataformas() throws Exception
     {
         criarArquivo();
         MyIO.println("\nEXCLUSAO");
@@ -247,6 +167,7 @@ class CrudPlataforma
      */
     private static void excluirPlataforma(int id) throws Exception
     {
+        criarArquivo();
         arqPlataformas.excluir(id);
     }//fim do metodo excluirPlataforam
 
@@ -254,8 +175,9 @@ class CrudPlataforma
      * Funcao do metodo: Este metodo serve para povoar o banco de dados.
      * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
-    private static void povoarBancoDeDados() throws Exception
+    public static void povoarBancoDeDados() throws Exception
     {
+        criarArquivo();
         incluirPlataforma("PlayStation 1");
         incluirPlataforma("PlayStation 2");
         incluirPlataforma("PlayStation 3");

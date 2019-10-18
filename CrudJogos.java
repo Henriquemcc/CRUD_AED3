@@ -2,124 +2,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.InputMismatchException;
 
-class CrudJogos
+class CrudJogos extends Crud
 {
-    private static ArquivoIndexado<Jogo> arqJogos;
-    private static ArquivoIndexado<Genero> arqGeneros;
-    private static ArquivoIndexado<Plataforma> arqPlataformas;
-    private static ArquivoIndexado<JogosDaPlataforma> arqJogosDaPlataforma;
-    private static ArvoreBMais idxJogoporGenero;
-    private static ArvoreBMais idxJogoparaJdp;
-    private static ArvoreBMais idxPlataformaparaJdp;
-
-    /**
-     * Funcao do metodo: Este metodo serve para executar o CrudJogos.
-     * @param args Parametros padrao do metodo main.
-     */
-    public static void main(String[]args)
-    {
-        int comando=-1;
-        do
-        {
-            try
-            {
-                criarArquivo();
-                boolean repetir;
-                do
-                {
-                    try
-                    {
-                        exibirMenu();
-                        comando=MyIO.readInt();
-                        if(comando<0 || comando>11)
-                            throw new InputMismatchException("Erro: Opcao Invalida!");
-                        repetir=false;
-                    }
-                    catch(InputMismatchException e)
-                    {
-                        MyIO.println(e.toString());
-                        repetir=true;
-                    }
-                }
-                while(repetir);
-
-                if(comando==1)
-                    menuListarJogo();
-                else if(comando==2)
-                    menuBuscarJogo();
-                else if(comando==3)
-                    menuIncluirJogo();
-                else if(comando==4)
-                    menuExcluirJogo();
-                else if(comando==5)
-                    menuListarJogosPorPlataforma();
-                else if(comando==6)
-                    menuListarJogosPorGenero();
-                else if(comando==7)
-                    menuListarGenero();
-                else if(comando==8)
-                    menuInserirGeneroDeJogo();
-                else if(comando==9)
-                    menuListarPlataformasDisponiveis();
-                else if(comando==10)
-                    menuInserirPlataforma();
-                else if(comando==11)
-                    povoarBancoDeDados();
-            }
-            catch(Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
-        while(comando!=0);
-    }//fim do metodo main
-
-    /**
-     * Funcao do metodo: Este metodo serve para criar todos os arquivos necessarios para o CRUD.
-     * 4 arquivos indexados: arqJogos, arqGeneros, arqJogosDaPlataforma, arqPlataformas.
-     * 3 arvores B+ : idxJogoporGenero, idxJogoparaJdp , idxPlataformaparaJdp.
-     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
-     */
-    private static void criarArquivo() throws Exception
-    {
-        arqJogos = new ArquivoIndexado<>(Jogo.class.getConstructor(), "jogos.db");//Arquivo dos jogos
-        arqGeneros = new ArquivoIndexado<>(Genero.class.getConstructor(), "generos.db");//Arquivo dos generos dos jogos
-        arqJogosDaPlataforma = new ArquivoIndexado<>(JogosDaPlataforma.class.getConstructor(), "jogosdaplataforma.db");
-        arqPlataformas = new ArquivoIndexado<>(Plataforma.class.getConstructor(), "plataformas.db");//Arquivo da plataforma de jogos
-        idxJogoporGenero= new ArvoreBMais(5,"jogoporgenero.idx");//Indice de jogos por generos
-        idxJogoparaJdp = new ArvoreBMais(5,"jogoparajdp.idx");//Indice de Jogos por Jogos da Plataforma
-        idxPlataformaparaJdp = new ArvoreBMais(5,"plataformaparajdp.idx");//Indice de plataforma para Jogos da Plataforma
-    }//fim do metodo criarArquivo
-
-    /**
-     * Funcao do metodo: Este metodo serve para exibir o menu com todas as opcoes do CRUD.
-     */
-    private static void exibirMenu()
-    {
-        MyIO.println("\n\n------------------------------------------------");
-        MyIO.println("                    MENU");
-        MyIO.println("------------------------------------------------");
-        MyIO.println("1 - Listar jogos");
-        MyIO.println("2 - Buscar jogo");
-        MyIO.println("3 - Incluir jogo");
-        MyIO.println("4 - Excluir jogo");
-        MyIO.println("5 - Listar Jogos por Plataforma");
-        MyIO.println("6 - Listar Jogos por Genero");
-        MyIO.println("7 - Listar Generos de Jogo disponiveis");
-        MyIO.println("8 - Inserir Genero de Jogo");
-        MyIO.println("9 - Listar Plataformas disponiveis");
-        MyIO.println("10 - Inserir Plataforma");
-        MyIO.println("11 - Povoar BD");
-        MyIO.println("0 - Sair");
-        MyIO.print("\nOpcao: ");
-    }//fim do metodo exibirMenu
-
     /**
      * Funcao do metodo: Este metodo serve para listar para o usuario todos os jogos disponiveis.
      * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
-    private static void menuListarJogo() throws Exception
+    public static void menuListarJogo() throws Exception
     {
+        criarArquivo();
         Object[] jogos=arqJogos.listar();
         for (Object o : jogos) {
             Jogo jogo = (Jogo) o;
@@ -139,8 +30,9 @@ class CrudJogos
      * @param id Chave de pesquisa id.
      * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
-    private static void menuBuscarPlataforma(int id) throws Exception
+    public static void menuBuscarPlataforma(int id) throws Exception
     {
+        criarArquivo();
         if(id>0)
         {
             Plataforma plataforma=buscarPlataforma(id);
@@ -159,6 +51,7 @@ class CrudJogos
      */
     private static Plataforma buscarPlataforma(int id) throws Exception
     {
+        criarArquivo();
         return (Plataforma)arqPlataformas.buscar(id);
     }//fim do metodo buscarPlataforma
 
@@ -166,8 +59,9 @@ class CrudJogos
      * Funcao do metodo: Este metodo serve para exibir na tela do usuario o menu de busca de jogo.
      * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
-    private static void menuBuscarJogo() throws Exception
+    public static void menuBuscarJogo() throws Exception
     {
+        criarArquivo();
         MyIO.println("\nBUSCA");
         boolean repetir;
         int id=-1;
@@ -208,8 +102,9 @@ class CrudJogos
      * @return Valor booleano indicando se o jogo procurado foi encontrado.
      * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
-    public static boolean buscarJogo(int id) throws Exception
+    private static boolean buscarJogo(int id) throws Exception
     {
+        criarArquivo();
         boolean resp=false;
         Jogo jogo=(Jogo)arqJogos.buscar(id);
         if(jogo!=null)
@@ -225,6 +120,7 @@ class CrudJogos
      */
     private static Jogo getJogo(int id) throws Exception
     {
+        criarArquivo();
         return (Jogo)arqJogos.buscar(id);
     }//fim do metodo getJogo
 
@@ -232,8 +128,9 @@ class CrudJogos
      * Funcao do metodo: Este metodo serve para exibir na tela do usuario o menu de inclusao de jogo.
      * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
-    private static void menuIncluirJogo() throws Exception
+    public static void menuIncluirJogo() throws Exception
     {
+        criarArquivo();
         String titulo;
         byte score=-1;
         String genero;
@@ -300,6 +197,7 @@ class CrudJogos
      */
     private static void inserirJogo(String titulo, byte score, String nomeDoGenero, ArrayList<String> nomeDaPlataforma) throws  Exception
     {
+        criarArquivo();
         Genero genero=getGenero(nomeDoGenero);
         if(genero==null)
         {
@@ -338,6 +236,7 @@ class CrudJogos
      */
     private static void inserirJogo(String titulo, byte score, String nomeDoGenero, String... nomeDaPlataforma) throws Exception
     {
+        criarArquivo();
         ArrayList<String> plataforma = new ArrayList<>(Arrays.asList(nomeDaPlataforma));
         inserirJogo(titulo, score, nomeDoGenero, plataforma);
     }//fim do metodo inserirJogo
@@ -353,6 +252,7 @@ class CrudJogos
      */
     private static Genero getGenero(String nomeDoGenero) throws Exception
     {
+        criarArquivo();
         Genero resp=null;
         ArrayList<Genero> genero=new ArrayList<>();
         Object[] objeto =arqGeneros.listar();
@@ -385,7 +285,7 @@ class CrudJogos
      */
     private static Plataforma getPlataforma(String nomeDaPlataforma) throws Exception
     {
-
+        criarArquivo();
         Plataforma resp=null;
         ArrayList<Plataforma> plataforma=new ArrayList<>();
         Object[] objeto =arqPlataformas.listar();
@@ -413,8 +313,9 @@ class CrudJogos
      * Funcao do metodo: Este metodo serve para exibir na tela do usuario o menu de exclusao de jogo.
      * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
-    private static void menuExcluirJogo() throws Exception
+    public static void menuExcluirJogo() throws Exception
     {
+        criarArquivo();
         MyIO.println("\nEXCLUSAO");
 
         int id=0;
@@ -471,6 +372,7 @@ class CrudJogos
      */
     private static void excluirJogo(int id) throws Exception
     {
+        criarArquivo();
         Jogo jogo=(Jogo)arqJogos.buscar(id);
         boolean resp=false;
         if(arqJogos.excluir(id))
@@ -491,8 +393,9 @@ class CrudJogos
      * Funcao do metodo: Este metodo serve para exibir o menu de listagem de jogos por plataforma.
      * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
-    private static void menuListarJogosPorPlataforma() throws Exception
+    public static void menuListarJogosPorPlataforma() throws Exception
     {
+        criarArquivo();
         menuListarPlataformas();
         int idplataforma=-1;
         boolean repetir;
@@ -525,8 +428,9 @@ class CrudJogos
      * Funcao do metodo: Este metodo serve para exibir na tela do usuario o menu de listagem das plataformas.
      * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
-    private static void menuListarPlataformas() throws Exception
+    public static void menuListarPlataformas() throws Exception
     {
+        criarArquivo();
         if(arqPlataformas==null)
             MyIO.println("Nenhuma plataforma registrada");
         else
@@ -549,8 +453,9 @@ class CrudJogos
      * Funcao do metodo: Este metodo serve para exibir na tela do usuario o menu de listagem de jogos por genero.
      * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
-    private static void menuListarJogosPorGenero() throws Exception
+    public static void menuListarJogosPorGenero() throws Exception
     {
+        criarArquivo();
         MyIO.println("Dentre os generos listados abaixo digite o id do genero desejado");
         menuListarGenero();
         int idGenero=-1;
@@ -594,8 +499,9 @@ class CrudJogos
      * Funcao do metodo: Este metodo serve para exibir na tela do usuario o menu de listagem de genero.
      * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
-    private static void menuListarGenero() throws Exception
+    public static void menuListarGenero() throws Exception
     {
+        criarArquivo();
         if(arqGeneros==null)
             MyIO.println("Nenhum genero registrado");
         else
@@ -618,8 +524,9 @@ class CrudJogos
      * Funcao do metodo: Este metodo serve para exibir na tela do usuario o menu de insercao de genero de um jogo.
      * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
-    private static void menuInserirGeneroDeJogo() throws Exception
+    public static void menuInserirGeneroDeJogo() throws Exception
     {
+        criarArquivo();
         MyIO.println("\nINCLUSAO");
         String tipo=MyIO.readLine("Tipo: ");
         char confirmacao=' ';
@@ -653,6 +560,7 @@ class CrudJogos
      */
     private static int inserirGenero(String nomeDoGenero) throws Exception
     {
+        criarArquivo();
         int resp=-1;
         if(getGenero(nomeDoGenero)==null)
         {
@@ -669,8 +577,9 @@ class CrudJogos
      * Funcao do metodo: Este metodo serve para exibir na tela do usuario o menu de listagem de plataformas disponiveis.
      * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
-    private static void menuListarPlataformasDisponiveis() throws Exception
+    public static void menuListarPlataformasDisponiveis() throws Exception
     {
+        criarArquivo();
         MyIO.println("Plataformas disponiveis");
         menuListarPlataformas();
     }//fim do metodo menuListarPlataformasDisponiveis
@@ -679,8 +588,9 @@ class CrudJogos
      * Funcao do metodo: Este metodo serve para exibir na tela do usuario o menu de insercao de plataforma.
      * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
-    private static void menuInserirPlataforma() throws Exception
+    public static void menuInserirPlataforma() throws Exception
     {
+        criarArquivo();
         MyIO.println("\nINCLUSAO");
         String nome=MyIO.readLine("Nome: ");
         char confirmacao=' ';
@@ -715,6 +625,7 @@ class CrudJogos
      */
     private static int inserirPlataforma(String nomeDaPlataforma) throws Exception
     {
+        criarArquivo();
         int resp=-1;
         if(getPlataforma(nomeDaPlataforma)==null)
         {
@@ -731,8 +642,9 @@ class CrudJogos
      * Funcao do metodo: Este metodo serve para povoar o banco de dados.
      * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
-    private static void povoarBancoDeDados() throws Exception
+    public static void povoarBancoDeDados() throws Exception
     {
+        criarArquivo();
         //Jogos
         inserirJogo("Counter Strike: Global Offensive", (byte)83,"FPS" ,"Windows", "Mac OS", "Linux", "Xbox", "Xbox 360");
         inserirJogo("World of Warcraft", (byte)93, "MOBA","Windows", "Mac OS");

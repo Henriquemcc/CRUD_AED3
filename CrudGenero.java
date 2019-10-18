@@ -1,94 +1,13 @@
 import java.text.DecimalFormat;
 import java.util.InputMismatchException;
 
-class CrudGenero
+class CrudGenero extends Crud
 {
-    private static ArquivoIndexado<Genero> arqGeneros;
-
-    /**
-     * Funcao do metodo: Este metodo serve para executar o CrudGenero.
-     * @param args Argumentos padrao do main.
-     */
-    public static void main(String[]args)
-    {
-        int comando=-1;
-        do
-        {
-            try
-            {
-                criarArquivo();
-                boolean repetir;
-                do
-                {
-                    try
-                    {
-                        exibirMenu();
-                        comando=MyIO.readInt();
-                        if(comando<0 || comando>9)
-                            throw new InputMismatchException("Erro: Opcao Invalida!");
-                        repetir=false;
-                    }
-                    catch(InputMismatchException e)
-                    {
-                        MyIO.println(e.toString());
-                        repetir=true;
-                    }
-                }
-                while(repetir);
-
-                if(comando==1)
-                    menuListarGenero();
-                else if(comando==2)
-                    menuBuscarGenero();
-                else if(comando==3)
-                    menuIncluirGenero();
-                else if(comando==4)
-                    menuExcluirGenero();
-                else if(comando==9)
-                    povoarBancoDeDados();
-                else
-                    MyIO.println("Opcao Invalida!");
-
-            }
-            catch(Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
-        while(comando!=0);
-    }//fim do metodo main
-
-    /**
-     * Funcao do metodo: Este metodo serve para criar todos os arquivos necessarios para o CRUD.
-     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
-     */
-    private static void criarArquivo() throws Exception
-    {
-        arqGeneros = new ArquivoIndexado<>(Genero.class.getConstructor(), "generos.db");
-    }//fim do metodo criarArquivo
-
-    /**
-     * Funcao do metodo: Este metodo serve para exibir o menu com todas as opcoes do CRUD.
-     */
-    private static void exibirMenu()
-    {
-        MyIO.println("\n\n------------------------------------------------");
-        MyIO.println("                    MENU");
-        MyIO.println("------------------------------------------------");
-        MyIO.println("1 - Listar generos");
-        MyIO.println("2 - Buscar generos");
-        MyIO.println("3 - Incluir generos");
-        MyIO.println("4 - Excluir generos");
-        MyIO.println("9 - Povoar BD");
-        MyIO.println("0 - Sair");
-        MyIO.print("\nOpcao: ");
-    }//fim do metodo exibirMenu
-
     /**
      * Funcao do metodo: Este metodo serve para listar para o usuario todos os generos disponiveis.
      * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
-    private static void menuListarGenero() throws Exception
+    public static void menuListarGenero() throws Exception
     {
         criarArquivo();
         if(arqGeneros!=null)
@@ -113,8 +32,9 @@ class CrudGenero
      * Funcao do metodo: Este metodo serve para exibir o menu de busca de genero.
      * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
-    private static void menuBuscarGenero() throws Exception
+    public static void menuBuscarGenero() throws Exception
     {
+        criarArquivo();
         MyIO.println("\nBUSCA");
         int id=0;
         boolean repetir;
@@ -145,8 +65,9 @@ class CrudGenero
      * Funcao do metodo: Este metodo serve para exibir o menu de inclusao de genero.
      * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
-    private static void menuIncluirGenero() throws Exception
+    public static void menuIncluirGenero() throws Exception
     {
+        criarArquivo();
         MyIO.println("\nINCLUSAO");
         String tipo=MyIO.readLine("Tipo: ");
         char confirmacao=MyIO.readLine("\nConfirma inclusao? ").toLowerCase().charAt(0);
@@ -162,6 +83,7 @@ class CrudGenero
      */
     private static void incluirGenero(String tipo) throws Exception
     {
+        criarArquivo();
         Genero genero=new Genero(-1, tipo);
         if(arqGeneros==null)
             criarArquivo();
@@ -172,8 +94,9 @@ class CrudGenero
      * Funcao do metodo: Este metodo serve para exbir o menu de exclusao de genero.
      * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
-    private static void menuExcluirGenero() throws Exception
+    public static void menuExcluirGenero() throws Exception
     {
+        criarArquivo();
         MyIO.println("\nEXCLUSAO");
         int id=0;
         boolean repetir;
@@ -230,6 +153,7 @@ class CrudGenero
      */
     private static void excluirGenero(int id) throws Exception
     {
+        criarArquivo();
         arqGeneros.excluir(id);
     }//fim do metodo excluirGenero
 
@@ -238,8 +162,9 @@ class CrudGenero
      * Funcao do metodo: Este metodo serve para povoar o banco de dados de genero.
      * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
-    private static void povoarBancoDeDados() throws Exception
+    public static void povoarBancoDeDados() throws Exception
     {
+        criarArquivo();
         incluirGenero("FPS");
         incluirGenero("RPG");
         incluirGenero("MOBA");
