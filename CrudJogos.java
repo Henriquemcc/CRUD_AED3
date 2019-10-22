@@ -390,41 +390,6 @@ class CrudJogos extends Crud
     }//fim do metodo excluirJogo
 
     /**
-     * Funcao do metodo: Este metodo serve para exibir o menu de listagem de jogos por plataforma.
-     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
-     */
-    public static void menuListarJogosPorPlataforma() throws Exception
-    {
-        criarArquivo();
-        menuListarPlataformas();
-        int idplataforma=-1;
-        boolean repetir;
-        do
-        {
-            try
-            {
-                idplataforma=MyIO.readInt("DIGITE O NUMERO DE UMA PLATAFORMA");
-                if(idplataforma<=0)
-                    throw new InputMismatchException("Entrada Invalida!");
-                repetir=false;
-            }
-            catch(InputMismatchException e)
-            {
-                MyIO.println(e.toString());
-                repetir=true;
-            }
-        }
-        while(repetir);
-        int[] idsDosJdp = idxPlataformaparaJdp.lista(idplataforma);
-        MyIO.println(idsDosJdp.length);
-        for (int value : idsDosJdp) {
-            JogosDaPlataforma jogosDaPlataforma = (JogosDaPlataforma) arqJogosDaPlataforma.buscar(value);
-            Jogo jogo = (Jogo) arqJogos.buscar(jogosDaPlataforma.getIdJogo());
-            MyIO.println(jogo.toString());
-        }
-    }//fim do metodo menuListarJogosPorPlataforma
-
-    /**
      * Funcao do metodo: Este metodo serve para exibir na tela do usuario o menu de listagem das plataformas.
      * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
@@ -450,109 +415,6 @@ class CrudJogos extends Crud
     }//fim do metodo menuListarPlataformas
 
     /**
-     * Funcao do metodo: Este metodo serve para exibir na tela do usuario o menu de listagem de jogos por genero.
-     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
-     */
-    public static void menuListarJogosPorGenero() throws Exception
-    {
-        criarArquivo();
-        MyIO.println("Dentre os generos listados abaixo digite o id do genero desejado");
-        menuListarGenero();
-        int idGenero=-1;
-        boolean repetir;
-        do
-        {
-            try
-            {
-                idGenero=MyIO.readInt();
-                if(idGenero<=0)
-                    throw new InputMismatchException("Entrada Invalida");
-                repetir=false;
-            }
-            catch(InputMismatchException e)
-            {
-                MyIO.println(e.toString());
-                repetir=true;
-                menuListarGenero();
-            }
-        }
-        while(repetir);
-
-        Genero genero=(Genero)arqGeneros.buscar(idGenero);
-        if(genero!=null)
-        {
-            MyIO.println(genero.getID() + ": " + genero.getTipo());
-            MyIO.println("Jogos: -------------");
-
-            int[] idsDosJogos = idxJogoporGenero.lista(idGenero);
-            for (int idsDosJogo : idsDosJogos) {
-                Jogo jogo = (Jogo) arqJogos.buscar(idsDosJogo);
-                MyIO.println(jogo.toString());
-            }
-        }
-        else
-            MyIO.println("Genero nao encontrado");
-        MyIO.pause();
-    }//fim do metodo menuListarJogosPorGenero
-
-    /**
-     * Funcao do metodo: Este metodo serve para exibir na tela do usuario o menu de listagem de genero.
-     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
-     */
-    public static void menuListarGenero() throws Exception
-    {
-        criarArquivo();
-        if(arqGeneros==null)
-            MyIO.println("Nenhum genero registrado");
-        else
-        {
-            Object[] generos =arqGeneros.listar();
-            if(generos.length==0)
-                MyIO.println("Nenhum genero registrado");
-            else
-            {
-                for (Object o : generos) {
-                    Genero genero = (Genero) o;
-                    MyIO.print(genero.getID() + " " + genero.getTipo() + " ");
-                }
-                MyIO.println();
-            }
-        }
-    }//fim do metodo menuListarGenero
-
-    /**
-     * Funcao do metodo: Este metodo serve para exibir na tela do usuario o menu de insercao de genero de um jogo.
-     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
-     */
-    public static void menuInserirGeneroDeJogo() throws Exception
-    {
-        criarArquivo();
-        MyIO.println("\nINCLUSAO");
-        String tipo=MyIO.readLine("Tipo: ");
-        char confirmacao=' ';
-        boolean repetir;
-        do
-        {
-            try
-            {
-                confirmacao=MyIO.readLine("\nConfirma inclusao? ").toLowerCase().charAt(0);
-                if(confirmacao!='s' && confirmacao!='n')
-                    throw new InputMismatchException("Entrada Invalida!");
-                repetir=false;
-            }
-            catch(InputMismatchException e)
-            {
-                MyIO.println(e.toString());
-                repetir=true;
-            }
-        }
-        while(repetir);
-
-        if(confirmacao=='s')
-            MyIO.println("Genero incluido com ID: "+inserirGenero(tipo));
-    }//fim do metodo menuInserirGenerosDeJogo
-
-    /**
      * Funcao do metodo: Este metodo serve para inserir um genero no arquivo de genero.
      * @param nomeDoGenero Nome do genero que sera inserido no arquivo de genero.
      * @return Id do genero inserido.
@@ -572,50 +434,6 @@ class CrudJogos extends Crud
 
         return resp;
     }//fim do metodo inserirGenero
-
-    /**
-     * Funcao do metodo: Este metodo serve para exibir na tela do usuario o menu de listagem de plataformas disponiveis.
-     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
-     */
-    public static void menuListarPlataformasDisponiveis() throws Exception
-    {
-        criarArquivo();
-        MyIO.println("Plataformas disponiveis");
-        menuListarPlataformas();
-    }//fim do metodo menuListarPlataformasDisponiveis
-
-    /**
-     * Funcao do metodo: Este metodo serve para exibir na tela do usuario o menu de insercao de plataforma.
-     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
-     */
-    public static void menuInserirPlataforma() throws Exception
-    {
-        criarArquivo();
-        MyIO.println("\nINCLUSAO");
-        String nome=MyIO.readLine("Nome: ");
-        char confirmacao=' ';
-        boolean repetir;
-        do
-        {
-            try
-            {
-                confirmacao=MyIO.readLine("\nConfirma inclusao? ").toLowerCase().charAt(0);
-                if(confirmacao!='s' && confirmacao!='n')
-                    throw new InputMismatchException("Entrada Invalida!");
-                repetir=false;
-            }
-            catch(InputMismatchException e)
-            {
-                MyIO.println(e.toString());
-                repetir=true;
-            }
-        }
-        while(repetir);
-
-        if(confirmacao=='s')
-            MyIO.println("Plataforma incluida com ID: "+inserirPlataforma(nome));
-
-    }//fim do metodo menuInserirPlataforma
 
     /**
      * Funcao do metodo: Este metodo serve para inserir uma plataforma no arquivo de plataformas.
