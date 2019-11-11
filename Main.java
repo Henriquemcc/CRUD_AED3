@@ -26,24 +26,22 @@ class Main {
                     MyIO.println("Operacoes com Generos:");
                     MyIO.println("\t7-  Listar generos.");
                     MyIO.println("\t8-  Buscar genero.");
-                    MyIO.println("\t9- Incluir genero.");
+                    MyIO.println("\t9-  Incluir genero.");
                     MyIO.println("\t10- Excluir genero.");
-                    MyIO.println("\t11- Alterar genero.");
-                    MyIO.println("\t12- Povoar banco de dados de generos.");
+                    MyIO.println("\t11- Povoar banco de dados de generos.");
                     MyIO.println("Operacoes com Plataformas:");
-                    MyIO.println("\t13- Listar plataformas.");
-                    MyIO.println("\t14- Buscar plataforma.");
-                    MyIO.println("\t15- Incluir plataforma.");
-                    MyIO.println("\t16- Excluir plataforma.");
-                    MyIO.println("\t17- Alterar plataforma.");
-                    MyIO.println("\t18- Povoar banco de dados de plataformas.");
+                    MyIO.println("\t12- Listar plataformas.");
+                    MyIO.println("\t13- Buscar plataforma.");
+                    MyIO.println("\t14- Incluir plataforma.");
+                    MyIO.println("\t15- Excluir plataforma.");
+                    MyIO.println("\t16- Povoar banco de dados de plataformas.");
                     MyIO.println("Outras Operacoes: ");
-                    MyIO.println("\t19- Povoar todos os bancos de dados.");
+                    MyIO.println("\t17- Povoar todos os bancos de dados.");
                     MyIO.println("\t0-  Sair");
                     try
                     {
                         comando=MyIO.readInt();
-                        if(comando<0 || comando>19)
+                        if(comando<0 || comando>17)
                             throw new Exception("Comando invalido!");
 
                         erroDigitacaoComando=false;
@@ -67,7 +65,7 @@ class Main {
                 else if(comando==4)
                     CrudJogos.menuExcluirJogo();
                 else if(comando==5)
-                    MyIO.println("Nao implementado!");//NAO IMPLEMENTADO
+                    CrudJogos.menuAlterarJogo();
                 else if(comando==6)
                     CrudJogos.povoarBancoDeDados();
                 else if(comando==7)
@@ -79,22 +77,18 @@ class Main {
                 else if(comando==10)
                     CrudGenero.menuExcluirGenero();
                 else if(comando==11)
-                    MyIO.println("Nao implementado!");//NAO IMPLEMENTADO
-                else if(comando==12)
                     CrudGenero.povoarBancoDeDados();
-                else if(comando==13)
+                else if(comando==12)
                     CrudPlataforma.menuListarPlataformas();
-                else if(comando==14)
+                else if(comando==13)
                     CrudPlataforma.menuBuscarPlataformas();
-                else if(comando==15)
+                else if(comando==14)
                     CrudPlataforma.menuIncluirPlataformas();
-                else if(comando==16)
+                else if(comando==15)
                     CrudPlataforma.menuExcluirPlataformas();
-                else if(comando==17)
-                    MyIO.println("Nao implementado!");//NAO IMPLEMENTADO
-                else if(comando==18)
+                else if(comando==16)
                     CrudPlataforma.povoarBancoDeDados();
-                else if(comando==19)
+                else if(comando==17)
                 {
                     CrudPlataforma.povoarBancoDeDados();
                     CrudGenero.povoarBancoDeDados();
