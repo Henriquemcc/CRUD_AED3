@@ -457,6 +457,90 @@ class CrudJogos extends Crud
     }//fim do metodo inserirPlataforma
 
     /**
+     * Funcao do metodo: Este metodo serve para exibir na tela do usuario o menu de alteração dos jogos.
+     * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
+     */
+    public  static void menuAlterarJogo() throws Exception
+    {
+       criarArquivo();
+       MyIO.println("Alterar");
+       MyIO.println("Para alterar um jogo do banco de dados sera necessario reinseri-lo");
+       menuListarJogo();
+       int id=0;
+       boolean repetir;
+       do
+       {
+           try
+           {
+               id=MyIO.readInt("ID: ");
+               if(id<=0)
+                   throw new InputMismatchException("Entrada Invalida!");
+               repetir=false;
+           }
+           catch(InputMismatchException e)
+           {
+               MyIO.println(e.toString());
+               repetir=true;
+           }
+       }
+       while(repetir);
+       excluirJogo(id);
+
+       String titulo;
+       byte score=-1;
+       String genero;
+
+       titulo=MyIO.readLine("Titulo: ");
+       do
+       {
+           try
+           {
+               score=MyIO.readByte("Score: ");
+               if(score<0 || score>100)
+                   throw new InputMismatchException("Entrada Invalida!");
+               repetir=false;
+           }
+           catch(InputMismatchException e)
+           {
+               MyIO.println(e.toString());
+               repetir=true;
+           }
+       }
+       while(repetir);
+
+       genero=MyIO.readLine("Genero: ");
+
+       ArrayList<String> plataformas=new ArrayList<>();
+       char adicionarMaisPlataformas=' ';
+       MyIO.println("Plataformas: ");
+       do
+       {
+           plataformas.add(MyIO.readLine("Plataforma: "));
+           boolean repetir1;
+           do
+           {
+               try
+               {
+                   adicionarMaisPlataformas=MyIO.readLine("Deseja adicionar outra plataforma? ").toLowerCase().charAt(0);
+                   if(adicionarMaisPlataformas!='s' && adicionarMaisPlataformas!='n')
+                       throw new InputMismatchException("Entrada Invalida");
+                   repetir1=false;
+               }
+               catch(InputMismatchException e)
+               {
+                   MyIO.println(e.toString());
+                   repetir1=true;
+               }
+           }
+           while(repetir1);
+       }
+       while(adicionarMaisPlataformas=='s');
+
+       inserirJogo(titulo, score, genero, plataformas);
+       
+    }
+
+    /**
      * Funcao do metodo: Este metodo serve para povoar o banco de dados.
      * @throws Exception Todas excecoes que ocorrerem serao tratadas no metodo que chamar.
      */
