@@ -5,8 +5,11 @@ Este é o CRUD (Um programa que Cria(Create), Lê(Read), Atualiza(Update) e Remo
 Os membros do grupo são:
 
 Henrique Mendonça Castelar Campos (https://github.com/Henriquemcc)
+
 Gabriel Lopes Ferreira (https://github.com/lope3x)
+
 Iago Augusto Coelho Morgado
+
 Lincoln Antunes Nogueira Coutinho (https://github.com/lincolncout)
 
 # Como Executar
