@@ -1,7 +1,7 @@
 # CRUD_AED3
 This is CRUD (A program that creates, reads, updates, and removes objects), a paper from Algorithms and Data Structures III of the Computer Science course at the Pontifical Catholic University of Minas Gerais. This CRUD was made with the theme of video games.
 
-#Group
+# Group
 The group members are:
 
 Henrique Mendonça Castelar Campos (https://github.com/Henriquemcc)
