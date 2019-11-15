@@ -18,6 +18,6 @@ To run CRUD:
 1- Download the file "CRUD.jar" from version 2.
 
 2- Open the terminal in the folder where the file was downloaded and type the following command:
-`` `
+```
 java -jar CRUD.jar
-`` `
+```
