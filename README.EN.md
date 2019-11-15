@@ -15,7 +15,7 @@ Lincoln Antunes Nogueira Coutinho (https://github.com/lincolncout)
 # How to Run
 To run CRUD:
 
-1- Download the file "CRUD.jar" from version 2.
+1- Download the file "CRUD.jar" from version 2 in the releases.
 
 2- Open the terminal in the folder where the file was downloaded and type the following command:
 ```
