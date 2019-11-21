@@ -8,7 +8,7 @@ Henrique Mendonça Castelar Campos (https://github.com/Henriquemcc)
 
 Gabriel Lopes Ferreira (https://github.com/lope3x)
 
-Iago Augusto Coelho Morgado
+Iago Augusto Coelho Morgado (https://github.com/IagoMorgado)
 
 Lincoln Antunes Nogueira Coutinho (https://github.com/lincolncout)
 
