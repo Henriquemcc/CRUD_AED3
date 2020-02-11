@@ -1,6 +1,6 @@
 [English Version](https://github.com/Henriquemcc/CRUD_AED3/blob/master/README.EN.md)
 
-# CRUD AED3
+# CRUD - Algoritmos e Estruturas de Dados III
 Este é o CRUD (Um programa que Cria(Create), Lê(Read), Atualiza(Update) e Remove(Delete) objetos), trabalho da matéria Algoritmos e Estruturas de Dados III do curso de Ciência da Computação da Pontifícia Universidade Católica de Minas Gerais. Este CRUD foi feito com a temática de jogos de vídeo game.
 
 # Grupo
