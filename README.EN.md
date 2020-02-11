@@ -1,5 +1,5 @@
 [Versão em Português](https://github.com/Henriquemcc/CRUD_AED3/blob/master/README.md)
-# CRUD_AED3
+# CRUD - Algorithms and Data Structures III
 This is CRUD (A program that creates, reads, updates, and removes objects), a paper from Algorithms and Data Structures III of the Computer Science course at the Pontifical Catholic University of Minas Gerais. This CRUD was made with the theme of video games.
 
 # Group
