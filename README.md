@@ -17,7 +17,7 @@ Lincoln Antunes Nogueira Coutinho (https://github.com/lincolncout)
 # Como Executar
 Para executar o CRUD:
 
-1- Baixe de "Release" o arquivo "CRUD.jar" da versão 2.
+1- Baixe de ["Release"](https://github.com/Henriquemcc/CRUD_AED3/releases) o arquivo ["CRUD.jar"](https://github.com/Henriquemcc/CRUD_AED3/releases/download/2/CRUD.jar) da versão 2.
 
 2- Abra o terminal na pasta em que o arquivo foi baixado e digite o seguinte comando:
 ```
