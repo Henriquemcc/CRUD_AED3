@@ -1,5 +1,8 @@
-[Versão em Português](https://github.com/Henriquemcc/CRUD_AED3/blob/master/README.md)
+[Versão em Português](README.md)
+
 # CRUD - Algorithms and Data Structures III
+[![deepcode](https://www.deepcode.ai/api/gh/badge?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwbGF0Zm9ybTEiOiJnaCIsIm93bmVyMSI6IkhlbnJpcXVlbWNjIiwicmVwbzEiOiJDUlVEX0FFRDMiLCJpbmNsdWRlTGludCI6ZmFsc2UsImF1dGhvcklkIjoyMzU0MiwiaWF0IjoxNjAyMTA4ODAyfQ.OMaUZtuxYcjXIbl7UfDsn2ESVoegTxFGLKQpsT7cdxQ)](https://www.deepcode.ai/app/gh/Henriquemcc/CRUD_AED3/_/dashboard?utm_content=gh%2FHenriquemcc%2FCRUD_AED3)
+
 This is CRUD (A program that creates, reads, updates, and removes objects), a paper from Algorithms and Data Structures III of the Computer Science course at the Pontifical Catholic University of Minas Gerais. This CRUD was made with the theme of video games.
 
 # Group
